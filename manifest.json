@@ -1,0 +1,13 @@
+{
+  "name": "Gezelligheid",
+  "scope": "/",
+  "icons": [{
+    "src": "/img/icon.png",
+    "sizes": "144x144",
+    "type": "image/png"
+  }],
+  "display": "standalone",
+  "start_url": "/?utm_source=homescreen",
+  "background_color": "#2196F3",
+  "theme_color": "#2196F3"
+}
