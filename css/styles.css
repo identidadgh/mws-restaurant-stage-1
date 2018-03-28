@@ -115,6 +115,7 @@ nav h1 a {
 /* ====================== Map ====================== */
 #map-container {
   width: 100%;
+  order: -1;
 }
 #map {
   height: 400px;
@@ -216,7 +217,7 @@ nav h1 a {
   /* top: 10vh; */
   width: 100%;
   /* padding: 3em; */
-  /* order: 1; */
+  order: 1;
 }
 .inside #map {
   background-color: #ccc;
@@ -264,7 +265,7 @@ nav h1 a {
   width: 100%;
 }
 #restaurant-container {
-  order: -1;
+  order: 0;
 }
 #reviews-container {
   order: 1;
