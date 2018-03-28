@@ -149,10 +149,24 @@ createRestaurantHTML = (restaurant) => {
 
   li.className = 'box';
 
+  const figure = document.createElement('figure');
+
   const image = document.createElement('img');
   image.className = 'restaurant-img';
+  // const description = restaurant.name.append()
+  const image_title = 'Restaurant ' + restaurant.name;
+  const image_description = restaurant.cuisine_type + ' cuisine in ' + restaurant.neighborhood;
+  image.setAttribute('alt', image_title);
+  image.setAttribute('title', image_description);
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
-  li.append(image);
+  
+  const figcaption_description = document.createTextNode(restaurant.name + ' for ' + image_description);
+  const figcaption = document.createElement('figcaption');
+  figcaption.appendChild(figcaption_description);
+
+  figure.append(image);
+  figure.append(figcaption);
+  li.append(figure);
 
   const name = document.createElement('h1');
   name.innerHTML = restaurant.name;
