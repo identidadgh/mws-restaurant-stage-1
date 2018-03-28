@@ -38,9 +38,12 @@ h1, h2, h3, h4, h5, h6 {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0 0 20px;
 }
-article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+article, aside, canvas, details, figcaption, footer, header, hgroup, menu, nav, section {
 	display: block;
 	width: 100%;
+}
+figure {
+  margin: 0; 
 }
 .boxes {
   display: flex;
@@ -172,8 +175,8 @@ nav h1 a {
   display: block;
   margin: 0;
   max-width: 100%;
-  min-height: 248px;
-  min-width: 100%;
+  /* min-height: 248px; */
+  /* min-width: 100%; */
 }
 #restaurants-list li h1 {
   color: #262831;
