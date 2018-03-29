@@ -5,10 +5,15 @@
    "node": true
  },
 
- "parser": "babel-eslint",
- "extends": "eslint:recommended",
+ "parser": "esprima",
  "rules": {
-   "no-console": [0],
-   "semi": [2, "always"]
- }
+     "semi": "error"
+ },
+  "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "ecmaFeatures": {
+          "jsx": true
+      }
+  }
 }
