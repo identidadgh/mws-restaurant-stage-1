@@ -1,5 +1,5 @@
 var staticCacheName = 'gezelligheid-static-v1';
-var contentImgsCache = 'gezelligheid-content-imgs';
+var contentImgsCache = 'gezelligheid-content-imgs-v1';
 var allCaches = [
     staticCacheName,
     contentImgsCache
@@ -25,8 +25,6 @@ self.addEventListener('install', function (event) {
                 'js/restaurant_info.js',
                 'css/styles.css',
                 'img/icon.png'
-                // 'https://fonts.gstatic.com/s/roboto/v15/2UX7WLTfW3W8TclTUvlFyQ.woff',
-                // 'https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOD8E0i7KZn-EPnyo3HZu7kw.woff'
             ]);
         })
     );
@@ -64,13 +62,6 @@ self.addEventListener('fetch', function (event) {
             event.respondWith(servePhoto(event.request));
             return;
         }
-        // TODO: respond to avatar urls by responding with
-        // the return value of serveAvatar(event.request)
-        // if (requestUrl.pathname.startsWith('/avatars/')) {
-        //     event.respondWith(serveAvatar(event.request));
-        //     return;
-        // }
-
     }
 
     event.respondWith(
@@ -82,7 +73,6 @@ self.addEventListener('fetch', function (event) {
 
 
 function servePhoto(request) {
-    // var storageUrl = request.url.replace(/-\d+px\.jpg$/, '');
     var storageUrl = request;
 
     return caches.open(contentImgsCache).then(function (cache) {
@@ -102,24 +92,3 @@ self.addEventListener('message', function (event) {
         self.skipWaiting();
     }
 });
-
-// self.addEventListener('fetch', function(event){
-//     // console.log([event.request]);
-//     // console.log('Hellos');
-//     // if (event.request.url.endsWith('.jpg')) {
-//     //     event.respondWith(
-//     //         fetch('/img/1.jpg')
-//     //     );
-//     // }
-//     event.respondWith(
-//         // new Response('Hello world')
-//         fetch(event.request).then(function(response){
-//             if (response.status == 404) {
-//                 return new Response("Whoops, not found!");
-//             }
-//             return response;
-//         }).catch(function(){
-//             return new Response("Uh oh, that totally failed!");
-//         })
-//     );
-// });
