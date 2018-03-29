@@ -142,6 +142,17 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
 }
 
 /**
+ * Restaurant image srcset attribute.
+ */
+imageSrcsetForRestaurant = (url, image_size) => {
+  // const imageName = url.replace('.jpg', '');
+  const result = url.split('.').join(image_size + '.');
+  console.log(result);
+  // return (`/img/${restaurant.photograph}`);
+  return result;
+}
+
+/**
  * Create restaurant HTML.
  */
 createRestaurantHTML = (restaurant) => {
@@ -158,7 +169,16 @@ createRestaurantHTML = (restaurant) => {
   const image_description = restaurant.cuisine_type + ' cuisine in ' + restaurant.neighborhood;
   image.setAttribute('alt', image_title);
   image.setAttribute('title', image_description);
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  
+  const image_url = DBHelper.imageUrlForRestaurant(restaurant);
+  
+  image.src = image_url; // replace the .jpg filetype at the suffix and replace with
+
+  let image_srcset = imageSrcsetForRestaurant(image_url, '-256_small_1x') + ' 1x, ';
+  image_srcset += imageSrcsetForRestaurant(image_url, '-512_small_2x') + ' 2x, ';
+  image_srcset += imageSrcsetForRestaurant(image_url, '-1024_small_3x') + ' 3x ';
+  
+  image.setAttribute('srcset', image_srcset);
   
   const figcaption_description = document.createTextNode(restaurant.name + ' for ' + image_description);
   const figcaption = document.createElement('figcaption');
