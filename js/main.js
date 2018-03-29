@@ -1,10 +1,14 @@
-// test
+/**
+ * Register a serviceworker from each page, because they can all be the entrypoint.
+ */
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js').then(function() {
-    console.log('Registration worked!');
-  }).catch(function(){
-    console.log('Registration failed!');
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/service-worker.js', {scope: './'})
+    .then(reg => console.log('SW registered!', reg))
+    .catch(err => console.log('SW registration failed!', err));
   });
+} else {
+  console.log('Service workers are not supported.');
 }
 
 let restaurants,

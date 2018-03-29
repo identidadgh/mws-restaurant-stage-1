@@ -1,3 +1,16 @@
+/**
+ * Register a serviceworker from each page, because they can all be the entrypoint.
+ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/service-worker.js', {scope: './'})
+    .then(reg => console.log('SW registered!', reg))
+    .catch(err => console.log('SW registration failed!', err));
+  });
+} else {
+  console.log('Service workers are not supported.');
+}
+
 let restaurant;
 var map;
 
@@ -82,7 +95,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   image_srcset += imageSrcsetForRestaurant(image_url, '-2048_medium_3x') + ' 3x ';
   
   image.setAttribute('srcset', image_srcset);
-  
+
   const figcaption_description = document.createTextNode(restaurant.name + ' for ' + image_description);
   const figcaption = document.createElement('figcaption');
   figcaption.appendChild(figcaption_description);
