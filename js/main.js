@@ -72,6 +72,8 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
     const option = document.createElement('option');
     option.innerHTML = neighborhood;
     option.value = neighborhood;
+    option.setAttribute('role', 'menuitem');
+    option.setAttribute('aria-label', neighborhood);
     select.append(option);
   });
 }
@@ -100,6 +102,8 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
     const option = document.createElement('option');
     option.innerHTML = cuisine;
     option.value = cuisine;
+    option.setAttribute('role', 'menuitem');
+    option.setAttribute('aria-label', cuisine);
     select.append(option);
   });
 }
@@ -166,6 +170,7 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
   });
+  ul.setAttribute('role', 'alert');
   addMarkersToMap();
 }
 
@@ -186,6 +191,7 @@ createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
 
   li.className = 'box';
+  li.setAttribute('role', 'treeitem');
 
   const figure = document.createElement('figure');
 
@@ -218,6 +224,7 @@ createRestaurantHTML = (restaurant) => {
   const name = document.createElement('h3');
   name.innerHTML = restaurant.name;
   li.append(name);
+  li.setAttribute('aria-label', restaurant.name);
 
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;
