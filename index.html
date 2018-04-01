@@ -19,19 +19,19 @@
   </header>
 
   <main class="boxes" id="maincontent">
-    <section>
+    <section role="menubar">
       <div class="filter-options">
         <h2>Filter Results</h2>
         <label for="neighborhoods-select" class="fieldKey">Neighborhoods:</label>
-        <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
+        <select role="menu" aria-controls="restaurants-list" aria-label="Filter Restaurants by Neighborhoods" id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
           <option value="all">All Neighborhoods</option>
         </select>
         <label for="cuisines-select" class="fieldKey">Cuisines:</label>
-        <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
+        <select role="menu" aria-controls="restaurants-list" aria-label="Filter Restaurants by Cuisines" id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
           <option value="all">All Cuisines</option>
         </select>
       </div>
-      <ul class="boxes" id="restaurants-list"></ul>
+      <ul aria-label="Restaurants List" role="group" class="boxes" id="restaurants-list"></ul>
     </section>
     <section role="application" id="map-container">
       <h2 id="map-name">Map</h2>
