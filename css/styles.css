@@ -219,11 +219,10 @@ nav h1 a {
 }
 #restaurants-list li a {
   background-color: orange;
-  border-bottom: 3px solid #eee;
   color: #262831;
   display: inline-block;
   font-size: 10pt;
-  margin: 15px 0 0;
+  margin: 1em 0 0;
   padding: 8px 30px 10px;
   text-align: center;
   text-decoration: none;
@@ -286,7 +285,7 @@ nav h1 a {
 #restaurant-container, #reviews-container {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
-  padding: 140px 40px 30px;
+  padding: 7.5em 2.5em 30px;
   width: 100%;
 }
 #restaurant-container {
