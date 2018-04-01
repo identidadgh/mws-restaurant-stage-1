@@ -31,25 +31,26 @@
 
   <!-- Beginning main -->
   <main class="boxes" id="maincontent">
-    <!-- Beginning map -->
-    <section role="application" id="map-container">
-      <div id="map"></div>
-    </section>
-    <!-- End map -->
     <!-- Beginning restaurant -->
     <section id="restaurant-container">
-      <h2 id="restaurant-name"></h2>
+      <h2 tabindex="0" id="restaurant-name"></h2>
       <img id="restaurant-img">
       <p id="restaurant-cuisine"></p>
-      <p id="restaurant-address"></p>
-      <table id="restaurant-hours"></table>
+      <p tabindex="0" id="restaurant-address"></p>
+      <table tabindex="0" id="restaurant-hours"></table>
     </section>
     <!-- end restaurant -->
     <!-- Beginning reviews -->
     <section id="reviews-container">
-      <ul id="reviews-list"></ul>
+      <ul tabindex="0" id="reviews-list"></ul>
     </section>
     <!-- End reviews -->
+    <!-- Beginning map -->
+    <section role="application" id="map-container">
+        <h2 id="map-name">Map</h2>
+        <div id="map"></div>
+      </section>
+      <!-- End map -->
   </main>
   <!-- End main -->
 
