@@ -54,7 +54,7 @@ a:focus, select:focus {
   flex-wrap: wrap;
 }
 .box {
-  flex: auto;
+  flex: unset;
 }
 .fieldKey {
   font-size: 1.5em;
@@ -174,9 +174,9 @@ nav h1 a {
   font-family: Arial,sans-serif;
   margin: 15px;
   min-height: 380px;
-  padding: 0 30px 25px;
+  padding: 0 2em 1em;
   text-align: left;
-  width: 270px;
+  width: 100vw;
 }
 #restaurants-list .restaurant-img {
   background-color: #ccc;
@@ -319,7 +319,22 @@ nav h1 a {
   #restaurant-container {
     width: 50vw;
   }
+  #restaurants-list li {
+    width: calc((100vw - 6em) / 2);
+  }
   .filter-options select {
     width: 50%;
+  }
+
+}
+
+@media screen and (min-width: 1000px) {
+  #restaurants-list li {
+    width: calc((100vw - 9em) / 3);
+  }
+}
+@media screen and (min-width: 1400px) {
+  #restaurants-list li {
+    width: calc((100vw - 12em) / 4);
   }
 }
