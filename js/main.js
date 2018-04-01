@@ -1,11 +1,35 @@
+console.group('main.js');
+var staticCacheName = 'gezelligheid-static-v1';
+var contentImgsCache = 'gezelligheid-content-imgs-v1';
+var allCaches = [
+  staticCacheName,
+  contentImgsCache
+];
 /**
  * Register a serviceworker from each page, because they can all be the entrypoint.
  */
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/service-worker.js', {scope: './'})
-    .then(reg => console.log('SW registered!', reg))
-    .catch(err => console.log('SW registration failed!', err));
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/service-worker.js', { scope: './' })
+      .then(reg => console.log(['SW registered!', reg]))
+      .then(function () {
+        console.groupCollapsed('Getting loaded images upon sw register!');
+        // const allImageElements = document.getElementsByTagName('img');
+        const allImageElements = document.getElementsByClassName('restaurant-img');
+        let allImages = [];
+        for (const item of allImageElements) {
+          let individual = new URL(item.currentSrc);
+          console.log(['Image pathname: ', individual.pathname]);
+          allImages.push(individual.pathname);
+        }
+        console.groupEnd();
+        caches.open(contentImgsCache).then(function (cache) {
+          console.log(['Caching loaded images: ', allImages]);
+          return cache.addAll(allImages);
+        })
+
+      })
+      .catch(err => console.log('SW registration failed!', err));
   });
 } else {
   console.log('Service workers are not supported.');
@@ -151,8 +175,7 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
 imageSrcsetForRestaurant = (url, image_size) => {
   // const imageName = url.replace('.jpg', '');
   const result = url.split('.').join(image_size + '.');
-  console.log(result);
-  // return (`/img/${restaurant.photograph}`);
+  // console.log('imageSrcsetForRestaurant: ' + result);
   return result;
 }
 
@@ -173,17 +196,17 @@ createRestaurantHTML = (restaurant) => {
   const image_description = restaurant.cuisine_type + ' cuisine in ' + restaurant.neighborhood;
   image.setAttribute('alt', image_title);
   image.setAttribute('title', image_description);
-  
+
   const image_url = DBHelper.imageUrlForRestaurant(restaurant);
-  
+
   image.src = image_url; // replace the .jpg filetype at the suffix and replace with
 
   let image_srcset = imageSrcsetForRestaurant(image_url, '-256_small_1x') + ' 1x, ';
   image_srcset += imageSrcsetForRestaurant(image_url, '-512_small_2x') + ' 2x, ';
   image_srcset += imageSrcsetForRestaurant(image_url, '-1024_small_3x') + ' 3x ';
-  
+
   image.setAttribute('srcset', image_srcset);
-  
+
   const figcaption_description = document.createTextNode(restaurant.name + ' for ' + image_description);
   const figcaption = document.createElement('figcaption');
   figcaption.appendChild(figcaption_description);
@@ -225,3 +248,4 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 }
+console.groupEnd();
