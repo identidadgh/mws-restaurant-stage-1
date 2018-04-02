@@ -80,7 +80,7 @@ a:focus, select:focus {
   color: #fdfdfd;
   font-size: 0.75em;
   letter-spacing: 1px;
-  padding: 25px;
+  padding: 2em;
   text-align: center;
   text-transform: uppercase;
 }
@@ -248,7 +248,7 @@ nav h1 a {
   width: 100%;
 }
 .inside #footer {
-  bottom: 0;
+  bottom: -5em;
   position: absolute;
   width: 100%;
 }
