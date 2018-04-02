@@ -54,7 +54,7 @@ article, aside, canvas, details, figcaption, footer, header, hgroup, menu, nav, 
 	width: 100%;
 }
 figure {
-  margin: 0; 
+  margin: 0;
 }
 a:focus, select:focus {
   box-shadow: 0 0 1em .5em red;
@@ -99,14 +99,15 @@ nav h1 a {
   color: #fff;
   font-size: 14pt;
   font-weight: 200;
-  letter-spacing: 10px;
+  letter-spacing: .25em;
   text-transform: uppercase;
 }
 #breadcrumb {
-  padding: 0.75em 1em;
+  padding: 0.5em 1em;
   border: 1px solid hsl(0, 0%, 90%);
   border-radius: 4px;
   background: hsl(300, 14%, 97%);
+  margin: auto;
 }
 
 /* Display list items side by side */
@@ -145,6 +146,7 @@ nav h1 a {
 #map-container {
   width: 100%;
   order: -1;
+  padding: 0 1em;
 }
 #map {
   height: 400px;
@@ -191,7 +193,7 @@ nav h1 a {
   font-family: Arial,sans-serif;
   margin: 15px;
   min-height: 380px;
-  padding: 0 2em 1em;
+  padding: 1em 2em;
   text-align: left;
   width: 100vw;
 }
@@ -254,10 +256,10 @@ nav h1 a {
 #restaurant-name, #map-name {
   color: #f18200;
   font-family: Arial,sans-serif;
-  font-size: 20pt;
+  font-size: 1.25em;
   font-weight: 200;
   letter-spacing: 0;
-  margin: 1.5em 0 30px;
+  margin: 4em 0 30px;
   text-transform: uppercase;
   line-height: 1.1;
 }
@@ -280,10 +282,12 @@ nav h1 a {
   text-transform: uppercase;
 	width: 90%;
 }
+.inside #map-container, #restaurant-container, #reviews-container {
+  padding: 7.5em .25em 30px;
+}
 #restaurant-container, #reviews-container {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
-  padding: 7.5em 2.5em 30px;
   width: 100%;
 }
 #restaurant-container {
@@ -291,7 +295,6 @@ nav h1 a {
 }
 #reviews-container {
   order: 2;
-  padding: 30px 40px 80px;
 }
 #reviews-container h2 {
   color: #f58500;
@@ -322,6 +325,18 @@ nav h1 a {
   color: #666;
 }
 
+@media screen and (min-width: 225px) {
+  #restaurant-name, #map-name {
+    margin-top: 2em;
+  }
+}
+
+@media screen and (min-width: 350px) {
+  #restaurant-name, #map-name {
+    margin-top: 1.5em;
+  }
+}
+
 @media screen and (min-width: 500px) {
   .inside #map-container {
     width: 50%;
@@ -335,7 +350,9 @@ nav h1 a {
   .filter-options select {
     width: 50%;
   }
-
+  #restaurant-name, #map-name {
+    margin-top: 1.25em;
+  }
 }
 
 @media screen and (min-width: 1000px) {
