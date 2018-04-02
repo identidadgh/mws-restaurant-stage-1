@@ -326,10 +326,10 @@ nav h1 a {
 
 @media screen and (min-width: 500px) {
   .inside #map-container {
-    width: 50vw;
+    width: 50%;
   }
   #restaurant-container {
-    width: 50vw;
+    width: 50%;
   }
   #restaurants-list li {
     width: calc((100vw - 6em) / 2);
