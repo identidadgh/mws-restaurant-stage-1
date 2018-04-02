@@ -322,7 +322,10 @@ nav h1 a {
   margin: 0 0 10px;
 }
 #restaurant-hours td {
-  color: #666;
+  color: #444;
+}
+#restaurant-hours td {
+  display: block;
 }
 
 @media screen and (min-width: 225px) {
@@ -358,6 +361,9 @@ nav h1 a {
 @media screen and (min-width: 1000px) {
   #restaurants-list li {
     width: calc((100vw - 9em) / 3);
+  }
+  #restaurant-hours td {
+    display: table-cell;
   }
 }
 
