@@ -9,7 +9,7 @@ html {
 }
 body,td,th,p{
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 1em;
+	font-size: 1.25em;
 	color: #262831;
 	line-height: 1.5;
 }
@@ -309,7 +309,7 @@ nav h1 a {
 }
 #reviews-list li {
   background-color: #fff;
-  border: 2px solid #f3f3f3;
+  border: 1em solid #f3f3f3;
   display: block;
   list-style-type: none;
   margin: 0 0 30px;
@@ -360,6 +360,13 @@ nav h1 a {
     width: calc((100vw - 9em) / 3);
   }
 }
+
+@media screen and (min-width: 1200px) {
+  #reviews-list li {
+    width: 50%;
+  }
+}
+
 @media screen and (min-width: 1400px) {
   #restaurants-list li {
     width: calc((100vw - 12em) / 4);
