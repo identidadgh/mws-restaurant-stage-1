@@ -3,7 +3,7 @@
   "short_name": "Gezelligheid",
   "scope": "/",
   "icons": [{
-    "src": "img/ic_restaurant_black_48dp/android/drawable-hdpi/ic_restaurant_black_48dp.png",
+    "src": "/img/ic_restaurant_black_48dp/android/drawable-hdpi/ic_restaurant_black_48dp.png",
     "type": "image/png",
     "sizes": "72x72"
   }, {
