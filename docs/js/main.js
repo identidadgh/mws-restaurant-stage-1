@@ -10,7 +10,7 @@ var allCaches = [
  */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () {
-    navigator.serviceWorker.register('/service-worker.js', { scope: './' })
+    navigator.serviceWorker.register('https://identidadgh.github.io/mws-restaurant-stage-1/service-worker.js', { scope: './' })
       .then(reg => console.log(['SW registered!', reg]))
       .then(function () {
         console.groupCollapsed('Getting loaded images upon sw register!');

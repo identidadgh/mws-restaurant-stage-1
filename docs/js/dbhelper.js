@@ -142,14 +142,14 @@ class DBHelper {
    * Restaurant page URL.
    */
   static urlForRestaurant(restaurant) {
-    return (`./restaurant.html?id=${restaurant.id}`);
+    return (`https://identidadgh.github.io/mws-restaurant-stage-1/restaurant.html?id=${restaurant.id}`);
   }
 
   /**
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
-    return (`/img/${restaurant.photograph}`);
+    return (`https://identidadgh.github.io/mws-restaurant-stage-1/img/${restaurant.photograph}`);
   }
 
   /**
