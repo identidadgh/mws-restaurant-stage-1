@@ -8,7 +8,7 @@ class DBHelper {
    * Change this to restaurants.json file location on your server.
    */
   static get DATABASE_URL() {
-    return `https://identidadgh.github.io/mws-restaurant-stage-1/data/restaurants.json`;
+    return `data/restaurants.json`;
   }
 
   /**
@@ -142,14 +142,14 @@ class DBHelper {
    * Restaurant page URL.
    */
   static urlForRestaurant(restaurant) {
-    return (`https://identidadgh.github.io/mws-restaurant-stage-1/restaurant.html?id=${restaurant.id}`);
+    return (`restaurant.html?id=${restaurant.id}`);
   }
 
   /**
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
-    return (`https://identidadgh.github.io/mws-restaurant-stage-1/img/${restaurant.photograph}`);
+    return (`img/${restaurant.photograph}`);
   }
 
   /**
