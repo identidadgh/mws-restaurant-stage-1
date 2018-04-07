@@ -20,15 +20,15 @@ self.addEventListener('install', function (event) {
     event.waitUntil(
         caches.open(staticCacheName).then(function (cache) {
             const staticCacheContent = [
-                'https://identidadgh.github.io/mws-restaurant-stage-1/',
-                'https://identidadgh.github.io/mws-restaurant-stage-1/index.html',
-                'https://identidadgh.github.io/mws-restaurant-stage-1/restaurant.html',
-                'https://identidadgh.github.io/mws-restaurant-stage-1/js/main.js',
-                'https://identidadgh.github.io/mws-restaurant-stage-1/js/restaurant_info.js',
-                'https://identidadgh.github.io/mws-restaurant-stage-1/js/dbhelper.js',
-                'https://identidadgh.github.io/mws-restaurant-stage-1/data/restaurants.json',
-                'https://identidadgh.github.io/mws-restaurant-stage-1/css/styles.css',
-                'https://identidadgh.github.io/mws-restaurant-stage-1/img/icon.png'
+                './',
+                './index.html',
+                './restaurant.html',
+                './js/main.js',
+                './js/restaurant_info.js',
+                './js/dbhelper.js',
+                './data/restaurants.json',
+                './css/styles.css',
+                './img/icon.png'
             ];
             console.log(['Caching static content: ', staticCacheContent]);
             return cache.addAll(staticCacheContent);
@@ -61,7 +61,7 @@ self.addEventListener('fetch', function (event) {
             return;
         }
         if (requestUrl.pathname === '/restaurant.html') {
-            event.respondWith(caches.match('https://identidadgh.github.io/mws-restaurant-stage-1/restaurant.html'));
+            event.respondWith(caches.match('/restaurant.html'));
             return;
         }
         if (requestUrl.pathname.startsWith('/img/')) {
