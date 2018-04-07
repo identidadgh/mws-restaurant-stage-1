@@ -88,7 +88,7 @@ fetchRestaurantFromURL = (callback) => {
 imageSrcsetForRestaurant = (url, image_size) => {
   console.log('imageSrcsetForRestaurant url: ', url);
   // const imageName = url.replace('.jpg', '');
-  const result = url.split('.').join(image_size + '.');
+  const result = url.split('.jpg').join(image_size + '.jpg');
   console.log('Images string for srcset: ', result);
   // return (`/img/${restaurant.photograph}`);
   return result;
