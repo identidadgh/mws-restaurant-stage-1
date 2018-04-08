@@ -78,6 +78,9 @@ module.exports = function(grunt) {
       dev: {
         src: ['img'],
       },
+      release: {
+        src: ['testdocs'],
+      },
     },
 
     /* Generate the images directory if it is missing */
@@ -85,6 +88,11 @@ module.exports = function(grunt) {
       dev: {
         options: {
           create: ['img']
+        },
+      },
+      release: {
+        options: {
+          create: ['testdocs']
         },
       },
     },
@@ -99,6 +107,50 @@ module.exports = function(grunt) {
           dest: 'img/'
         }]
       },
+      replace: {
+        files: [{
+          expand: true,
+          src: ['*.html'],
+          dest: 'testdocs/'
+        }],
+        options: {
+          process: function (content, srcpath) {
+            return content.replace(/<!-- base -->/i, '<base href="https://identidadgh.github.io/mws-restaurant-stage-1/index.html">');
+          }
+        }
+      },
+      release: {
+        files: [{
+          expand: true,
+          src: ['css/**'],
+          dest: 'testdocs/'
+        },
+        {
+          expand: true,
+          src: ['data/**'],
+          dest: 'testdocs/'
+        },
+        {
+          expand: true,
+          src: ['img/**'],
+          dest: 'testdocs/'
+        },
+        {
+          expand: true,
+          src: ['js/**'],
+          dest: 'testdocs/'
+        },
+        {
+          expand: true,
+          src: 'manifest.webmanifest',
+          dest: 'testdocs/'
+        },
+        {
+          expand: true,
+          src: 'service-worker.js',
+          dest: 'testdocs/'
+        }]
+      },
     },
   });
   
@@ -107,5 +159,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-mkdir');
   grunt.registerTask('default', ['clean', 'mkdir', 'copy', 'responsive_images']);
+  grunt.registerTask('release', ['clean:release', 'mkdir:release', 'copy:replace', 'copy:release']);
 
 };
