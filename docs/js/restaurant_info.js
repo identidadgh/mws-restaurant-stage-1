@@ -118,7 +118,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   let image_srcset = imageSrcsetForRestaurant(image_url, '-512_medium_1x') + ' 1x, ';
   image_srcset += imageSrcsetForRestaurant(image_url, '-1024_medium_2x') + ' 2x, ';
   image_srcset += imageSrcsetForRestaurant(image_url, '-2048_medium_3x') + ' 3x ';
-
+  
   image.setAttribute('srcset', image_srcset);
 
   const figcaption_description = document.createTextNode(restaurant.name + ' for ' + image_description);

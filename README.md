@@ -23,6 +23,9 @@ In a terminal, check the version of Python you have: `python -V`. If you have Py
 ### Note about generating images of different sizes using Grunt
 In a terminal, check the version of grunt you have: `grunt -v`. If you have grunt installed, run it in the project's root dir with `grunt`. If you don't have Grunt installed, you can use `npm install grunt` and after that run `grunt`. Grunt configuration are in the Gruntfile.js and Grunt dependencies are in the package.json file to be used with npm.
 
+### Note about preparation of ./docs directory for deploying to github.io pages using Grunt
+In a terminal, check the version of grunt you have: `grunt -v`. If you have grunt installed, run it in the project's root dir with `grunt release`. If you don't have Grunt installed, you can use `npm install grunt` and after that run `grunt release`. Grunt configuration are in the Gruntfile.js and Grunt dependencies are in the package.json file to be used with npm.
+
 ### Note about ES6
 
 Most of the code in this project has been written to the ES6 JavaScript specification for compatibility with modern web browsers and future proofing JavaScript code. As much as possible, try to maintain use of ES6 in any additional JavaScript you write. 

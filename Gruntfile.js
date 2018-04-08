@@ -79,7 +79,7 @@ module.exports = function(grunt) {
         src: ['img'],
       },
       release: {
-        src: ['testdocs'],
+        src: ['docs'],
       },
     },
 
@@ -92,7 +92,7 @@ module.exports = function(grunt) {
       },
       release: {
         options: {
-          create: ['testdocs']
+          create: ['docs']
         },
       },
     },
@@ -111,7 +111,7 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           src: ['*.html'],
-          dest: 'testdocs/'
+          dest: 'docs/'
         }],
         options: {
           process: function (content, srcpath) {
@@ -123,32 +123,32 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           src: ['css/**'],
-          dest: 'testdocs/'
+          dest: 'docs/'
         },
         {
           expand: true,
           src: ['data/**'],
-          dest: 'testdocs/'
+          dest: 'docs/'
         },
         {
           expand: true,
           src: ['img/**'],
-          dest: 'testdocs/'
+          dest: 'docs/'
         },
         {
           expand: true,
           src: ['js/**'],
-          dest: 'testdocs/'
+          dest: 'docs/'
         },
         {
           expand: true,
           src: 'manifest.webmanifest',
-          dest: 'testdocs/'
+          dest: 'docs/'
         },
         {
           expand: true,
           src: 'service-worker.js',
-          dest: 'testdocs/'
+          dest: 'docs/'
         }]
       },
     },
