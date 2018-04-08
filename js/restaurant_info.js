@@ -10,7 +10,7 @@ var allCaches = [
  */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () {
-    navigator.serviceWorker.register('/service-worker.js', { scope: './' })
+    navigator.serviceWorker.register('service-worker.js', { scope: './' })
       .then(reg => console.log(['SW registered!', reg]))
       .then(function () {
         console.groupCollapsed('Getting loaded images upon sw register!');
@@ -86,8 +86,9 @@ fetchRestaurantFromURL = (callback) => {
  * Restaurant image srcset attribute.
  */
 imageSrcsetForRestaurant = (url, image_size) => {
+  console.log('imageSrcsetForRestaurant url: ', url);
   // const imageName = url.replace('.jpg', '');
-  const result = url.split('.').join(image_size + '.');
+  const result = url.split('.jpg').join(image_size + '.jpg');
   console.log('Images string for srcset: ', result);
   // return (`/img/${restaurant.photograph}`);
   return result;

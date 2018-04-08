@@ -20,15 +20,15 @@ self.addEventListener('install', function (event) {
     event.waitUntil(
         caches.open(staticCacheName).then(function (cache) {
             const staticCacheContent = [
-                '/',
-                '/index.html',
-                '/restaurant.html',
-                'js/main.js',
-                'js/restaurant_info.js',
-                'js/dbhelper.js',
-                'data/restaurants.json',
-                'css/styles.css',
-                'img/icon.png'
+                './',
+                './index.html',
+                './restaurant.html',
+                './js/main.js',
+                './js/restaurant_info.js',
+                './js/dbhelper.js',
+                './data/restaurants.json',
+                './css/styles.css',
+                './img/icon.png'
             ];
             console.log(['Caching static content: ', staticCacheContent]);
             return cache.addAll(staticCacheContent);
