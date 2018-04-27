@@ -338,6 +338,14 @@ nav h1 a {
   display: block;
 }
 
+/*** Error State Styling ***/
+.error-no-results {
+  /* background: url(../images/icon-no-image.png) no-repeat 50% top; */
+  margin-bottom: 3em;
+  padding-top: 8em;
+  text-align: center;
+}
+
 @media screen and (min-width: 225px) {
   #restaurant-name, #map-name {
     margin-top: 3.25em;

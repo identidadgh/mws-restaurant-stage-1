@@ -171,9 +171,17 @@ resetRestaurants = restaurants => {
  */
 fillRestaurantsHTML = (restaurants = self.restaurants) => {
   const ul = document.getElementById("restaurants-list");
-  restaurants.forEach(restaurant => {
-    ul.append(createRestaurantHTML(restaurant));
-  });
+  // Check if there are at least 1 restaurant in the results.
+  if (Object.keys(restaurants).length > 1) {
+    restaurants.forEach(restaurant => {
+      ul.append(createRestaurantHTML(restaurant));
+    });
+    // Display a message to the user that there were no results found for the selected filters.
+  } else {
+    console.log("No restaurants found");
+    ul.insertAdjacentElement("afterbegin", createNoResultsHTML("restaurants"));
+  }
+
   ul.setAttribute("role", "alert");
   addMarkersToMap();
 };
@@ -186,6 +194,30 @@ imageSrcsetForRestaurant = (url, image_size) => {
   const result = url.split(".").join(image_size + ".");
   // console.log('imageSrcsetForRestaurant: ' + result);
   return result;
+};
+
+/**
+ * Create no-results HTML
+ */
+createNoResultsHTML = part => {
+  const div = document.createElement("div");
+
+  div.className = "box error-no-results";
+  div.setAttribute("role", "treeitem");
+
+  const heading = document.createElement("h3");
+  heading.innerHTML = "No Results :(";
+  div.append(heading);
+
+  const description = document.createElement("p");
+  description.innerHTML = `Unfortunately, there were no ${part} returned for the filters you used.`;
+  div.append(description);
+
+  const call_to_action = document.createElement("p");
+  call_to_action.innerHTML = `Please try a different filter for Neighbourhood or Cuisine.`;
+  div.append(call_to_action);
+
+  return div;
 };
 
 /**
