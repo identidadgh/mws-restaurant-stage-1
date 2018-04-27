@@ -63,9 +63,12 @@ a:focus, select:focus {
 .boxes {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 .box {
-  flex: unset;
+  flex-direction: column;
+  display: flex;
+  justify-content:  space-between;
 }
 .fieldKey {
   font-size: 1.25em;
