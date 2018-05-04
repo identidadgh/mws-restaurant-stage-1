@@ -20,9 +20,10 @@ self.addEventListener("install", function(event) {
         "./",
         "./index.html",
         "./restaurant.html",
-        "./js/main.js",
-        "./js/restaurant_info.js",
-        "./js/dbhelper.js",
+        // "./js/app.js",
+        // "./js/dbhelper.js",
+        // "./js/main.js",
+        // "./js/restaurant_info.js",
         "./data/restaurants.json",
         "./css/styles.css",
         "./img/icon.png"

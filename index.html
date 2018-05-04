@@ -10,6 +10,10 @@
   <meta name="theme-color" content="#2196F3">
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="modulepreload" href="js/app.js">
+  <link rel="modulepreload" href="js/dbhelper.js">
+  <!-- <link rel="modulepreload" href="js/main.js"> -->
+
   <title>Restaurant Reviews</title>
 </head>
 
@@ -41,9 +45,25 @@
     </section>
   </main>
 
-  <script defer src="js/dbhelper.js"></script>
+  <!-- <script type="module" src="js/app.js"></script> -->
+  
+  <!-- <script type="module">
+    import { app as myApp } from "./js/app.js";
+    import DBHelper from "./dbhelper.js";
+  </script>
   <script defer src="js/main.js"></script>
+  <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQ6ibwJm_GvwMrmAlZ2gBqgez1392EsY0&libraries=places&callback=initMap"></script> -->
+  
+  <!-- <script type="module" src="js/dbhelper.js"></script>
+  <script defer src="js/main.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQ6ibwJm_GvwMrmAlZ2gBqgez1392EsY0&libraries=places&callback=initMap"></script> -->
+  
+  <script type="module" src="js/main.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQ6ibwJm_GvwMrmAlZ2gBqgez1392EsY0&libraries=places&callback=initMap"></script>
+  
+  <!-- <script defer src="js/dbhelper.js"></script>
+  <script defer src="js/main.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQ6ibwJm_GvwMrmAlZ2gBqgez1392EsY0&libraries=places&callback=initMap"></script> -->
 
 
   <footer id="footer">

@@ -1,13 +1,15 @@
+import { app as myApp } from "./app.js";
 /**
  * Common database helper functions.
  */
-class DBHelper {
+export default class DBHelper {
   /**
    * Database URL.
    * Change this to restaurants.json file location on your server.
    */
   static get DATABASE_URL() {
-    return `data/restaurants.json`;
+    let database_url = myApp.getDatabaseUrl();
+    return database_url;
   }
 
   /**
@@ -16,9 +18,19 @@ class DBHelper {
   static fetchRestaurants(callback) {
     fetch(DBHelper.DATABASE_URL)
       .then(response => response.json())
-      .then(data => callback(null, data.restaurants))
+      // .then(tussendoor => console.log("tussendoor: ", tussendoor))
+      .then(function (data) {
+        // let dataFormat = (myApp.config.dataFormat)
+        //   ? data[myApp.config.dataFormat]
+        //   : data;
+        // return callback(null, dataFormat);
+        return callback(null, data);
+      })
+      // .then(data => callback(null, data["restaurants"]))
+      // .then(data => callback(null, data))
       .catch(e => {
-        callback("Fetch Restaurants Error", null);
+        // callback("Fetch Restaurants Error", null);
+        console.log("ybs error in fetchRestaurants", e);
       });
   }
 
@@ -155,7 +167,9 @@ class DBHelper {
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
-    return `img/${restaurant.photograph}`;
+    let result =
+      "img/" + restaurant.photograph + myApp.getApiPhotographFormat();
+    return result;
   }
 
   /**

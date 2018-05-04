@@ -1,3 +1,42 @@
+import { app as myApp } from "./app.js";
+import DBHelper from "./dbhelper.js";
+
+// console.log("test cube: ", cube(2));
+// var myApp = myApp || {};
+
+// myApp.flags = {
+//     envForceProduction: false // Default is false. Set to true to force "Production" configurations on "Development"
+// };
+
+// myApp.config = {
+//     envName: "Production",
+//     isDevelopmentEnvironment: "",
+//     apiPhotographFormat: "",
+//     databaseUrl: "data/restaurants.json",
+//     dataFormat: "restaurants"
+// };
+
+// myApp.settings = {
+//     init: function () {
+//         let config = myApp.config;
+//         // config["isDevelopmentEnvironment"] = false;
+//         config["isDevelopmentEnvironment"] = !myApp.flags.envForceProduction
+//             ? window.location.hostname === "localhost"
+//             : false;
+
+//         if (myApp.config.isDevelopmentEnvironment) {
+//             config["envName"] = "Development";
+//             config["apiPhotographFormat"] = ".jpg";
+//             config["databaseUrl"] = "http://localhost:1337/restaurants";
+//             config["dataFormat"] = "";
+//         }
+//     }
+// };
+
+// myApp.settings.init();
+
+// console.log("Configuration: ", myApp.config);
+
 console.group("main.js");
 var staticCacheName = "gezelligheid-static-v1";
 var contentImgsCache = "gezelligheid-content-imgs-v1";
@@ -161,6 +200,9 @@ resetRestaurants = restaurants => {
   ul.innerHTML = "";
 
   // Remove all map markers
+    // if (self.markers) {
+    //     self.markers.forEach(m => m.setMap(null));
+    // }
   self.markers.forEach(m => m.setMap(null));
   self.markers = [];
   self.restaurants = restaurants;
