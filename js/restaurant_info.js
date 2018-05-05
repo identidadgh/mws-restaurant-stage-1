@@ -1,3 +1,7 @@
+"use strict";
+import { app as myApp } from "./app.js";
+import DBHelper from "./dbhelper.js";
+
 console.group("restaurant_info.js");
 var staticCacheName = "gezelligheid-static-v1";
 var contentImgsCache = "gezelligheid-content-imgs-v1";
@@ -6,11 +10,11 @@ var allCaches = [staticCacheName, contentImgsCache];
  * Register a serviceworker from each page, because they can all be the entrypoint.
  */
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function () {
+  window.addEventListener("load", function() {
     navigator.serviceWorker
       .register("service-worker.js", { scope: "./" })
       .then(reg => console.log(["SW registered!", reg]))
-      .then(function () {
+      .then(function() {
         console.groupCollapsed("Getting loaded images upon sw register!");
         // const allImageElements = document.getElementsByTagName('img');
         const allImageElements = document.getElementsByClassName(
@@ -23,7 +27,7 @@ if ("serviceWorker" in navigator) {
           allImages.push(individual.pathname);
         }
         console.groupEnd();
-        caches.open(contentImgsCache).then(function (cache) {
+        caches.open(contentImgsCache).then(function(cache) {
           console.log(["Caching loaded images: ", allImages]);
           return cache.addAll(allImages);
         });
@@ -60,7 +64,7 @@ window.initMap = () => {
 /**
  * Get current restaurant from page URL.
  */
-fetchRestaurantFromURL = callback => {
+const fetchRestaurantFromURL = callback => {
   if (self.restaurant) {
     // restaurant already fetched!
     callback(null, self.restaurant);
@@ -87,7 +91,7 @@ fetchRestaurantFromURL = callback => {
 /**
  * Restaurant image srcset attribute.
  */
-imageSrcsetForRestaurant = (url, image_size) => {
+const imageSrcsetForRestaurant = (url, image_size) => {
   console.log("imageSrcsetForRestaurant url: ", url);
   // const imageName = url.replace('.jpg', '');
   const result = url.split(".jpg").join(image_size + ".jpg");
@@ -99,7 +103,7 @@ imageSrcsetForRestaurant = (url, image_size) => {
 /**
  * Create restaurant HTML and add it to the webpage
  */
-fillRestaurantHTML = (restaurant = self.restaurant) => {
+const fillRestaurantHTML = (restaurant = self.restaurant) => {
   const name = document.getElementById("restaurant-name");
   name.innerHTML = restaurant.name;
 
@@ -109,35 +113,35 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const image = document.getElementById("restaurant-img");
 
   if (typeof restaurant.photograph != "undefined") {
-  const figure = document.createElement("figure");
+    const figure = document.createElement("figure");
 
-  image.className = "restaurant-img";
-  const image_title = "Restaurant " + restaurant.name;
-  const image_description =
-    restaurant.cuisine_type + " cuisine in " + restaurant.neighborhood;
-  image.setAttribute("alt", image_title);
-  image.setAttribute("title", image_description);
-  const image_url = DBHelper.imageUrlForRestaurant(restaurant);
-  image.src = image_url;
+    image.className = "restaurant-img";
+    const image_title = "Restaurant " + restaurant.name;
+    const image_description =
+      restaurant.cuisine_type + " cuisine in " + restaurant.neighborhood;
+    image.setAttribute("alt", image_title);
+    image.setAttribute("title", image_description);
+    const image_url = DBHelper.imageUrlForRestaurant(restaurant);
+    image.src = image_url;
 
-  let image_srcset =
-    imageSrcsetForRestaurant(image_url, "-512_medium_1x") + " 1x, ";
-  image_srcset +=
-    imageSrcsetForRestaurant(image_url, "-1024_medium_2x") + " 2x, ";
-  image_srcset +=
-    imageSrcsetForRestaurant(image_url, "-2048_medium_3x") + " 3x ";
+    let image_srcset =
+      imageSrcsetForRestaurant(image_url, "-512_medium_1x") + " 1x, ";
+    image_srcset +=
+      imageSrcsetForRestaurant(image_url, "-1024_medium_2x") + " 2x, ";
+    image_srcset +=
+      imageSrcsetForRestaurant(image_url, "-2048_medium_3x") + " 3x ";
 
-  image.setAttribute("srcset", image_srcset);
+    image.setAttribute("srcset", image_srcset);
 
-  const figcaption_description = document.createTextNode(
-    restaurant.name + " for " + image_description
-  );
-  const figcaption = document.createElement("figcaption");
-  figcaption.appendChild(figcaption_description);
+    const figcaption_description = document.createTextNode(
+      restaurant.name + " for " + image_description
+    );
+    const figcaption = document.createElement("figcaption");
+    figcaption.appendChild(figcaption_description);
 
-  image.parentNode.insertBefore(figure, image);
-  figure.append(image);
-  figure.append(figcaption);
+    image.parentNode.insertBefore(figure, image);
+    figure.append(image);
+    figure.append(figcaption);
   } else {
     const parentSection = image.parentNode;
 
@@ -162,7 +166,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.
  */
-fillRestaurantHoursHTML = (
+const fillRestaurantHoursHTML = (
   operatingHours = self.restaurant.operating_hours
 ) => {
   const hours = document.getElementById("restaurant-hours");
@@ -184,7 +188,7 @@ fillRestaurantHoursHTML = (
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById("reviews-container");
   const title = document.createElement("h3");
   title.id = "reviews-name";
@@ -207,7 +211,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
 /**
  * Create review HTML and add it to the webpage.
  */
-createReviewHTML = review => {
+const createReviewHTML = review => {
   const li = document.createElement("li");
   li.className = "box";
   const name = document.createElement("p");
@@ -232,7 +236,7 @@ createReviewHTML = review => {
 /**
  * Add restaurant name to the breadcrumb navigation menu
  */
-fillBreadcrumb = (restaurant = self.restaurant) => {
+const fillBreadcrumb = (restaurant = self.restaurant) => {
   const breadcrumb = document.getElementById("breadcrumb");
   const li = document.createElement("li");
   li.innerHTML = restaurant.name;
@@ -243,7 +247,7 @@ fillBreadcrumb = (restaurant = self.restaurant) => {
 /**
  * Get a parameter by name from page URL.
  */
-getParameterByName = (name, url) => {
+const getParameterByName = (name, url) => {
   if (!url) url = window.location.href;
   name = name.replace(/[\[\]]/g, "\\$&");
   const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`),
