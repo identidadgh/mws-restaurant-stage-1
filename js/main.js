@@ -271,6 +271,7 @@ const createRestaurantHTML = restaurant => {
     li.className = "box";
     li.setAttribute("role", "treeitem");
 
+    if (typeof restaurant.photograph != "undefined") {
     const figure = document.createElement("figure");
 
     const image = document.createElement("img");
@@ -304,6 +305,13 @@ const createRestaurantHTML = restaurant => {
     figure.append(image);
     figure.append(figcaption);
     li.append(figure);
+    } else {
+      let div = document.createElement("div");
+      div.className = "error-no-results";
+      div.innerText =
+        "Unfortunately, there were no images returned for this restaurant.";
+      li.append(div);
+    }
 
     const name = document.createElement("h3");
     name.innerHTML = restaurant.name;

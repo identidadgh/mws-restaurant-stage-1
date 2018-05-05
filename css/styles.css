@@ -340,7 +340,7 @@ nav h1 a {
 
 /*** Error State Styling ***/
 .error-no-results {
-  /* background: url(../images/icon-no-image.png) no-repeat 50% top; */
+  background: url(../img/icon-no-image.png) no-repeat 50% top;
   margin-bottom: 3em;
   padding-top: 8em;
   text-align: center;
