@@ -1,3 +1,4 @@
+"use strict";
 import { app as myApp } from "./app.js";
 import DBHelper from "./dbhelper.js";
 
@@ -81,9 +82,28 @@ import DBHelper from "./dbhelper.js";
   var markers = [];
 
   /**
+   * Cache DOM
+   */
+  const filterOptionsNeighbourhoods = document.querySelector(
+    'select[id="neighborhoods-select"]'
+  );
+  const filterOptionsCuisines = document.querySelector(
+    'select[id="cuisines-select"]'
+  );
+
+  /**
+   * Bind Events
+   */
+  const filterBindEvents = function() {
+    filterOptionsNeighbourhoods.onchange = updateRestaurants;
+    filterOptionsCuisines.onchange = updateRestaurants;
+  };
+
+  /**
    * Fetch neighborhoods and cuisines as soon as the page is loaded.
    */
   document.addEventListener("DOMContentLoaded", event => {
+    filterBindEvents();
     updateRestaurants();
     fetchNeighborhoods();
     fetchCuisines();
