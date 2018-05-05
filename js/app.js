@@ -49,6 +49,7 @@ var app = (function () {
 
   return {
     getDatabaseUrl: getDatabaseUrl,
+    getApiPhotographFormat: getApiPhotographFormat,
     loadServiceWorker: loadServiceWorker
   };
 
