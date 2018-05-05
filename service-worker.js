@@ -13,9 +13,9 @@ var myInit = {
   cache: "default"
 };
 
-self.addEventListener("install", function (event) {
+self.addEventListener("install", function(event) {
   event.waitUntil(
-    caches.open(staticCacheName).then(function (cache) {
+    caches.open(staticCacheName).then(function(cache) {
       const staticCacheContent = [
         "./",
         "./index.html",
@@ -34,18 +34,18 @@ self.addEventListener("install", function (event) {
   );
 });
 
-self.addEventListener("activate", function (event) {
+self.addEventListener("activate", function(event) {
   event.waitUntil(
-    caches.keys().then(function (cacheNames) {
+    caches.keys().then(function(cacheNames) {
       return Promise.all(
         cacheNames
-          .filter(function (cacheName) {
+          .filter(function(cacheName) {
             return (
               cacheName.startsWith("gezelligheid-") &&
               !allCaches.includes(cacheName)
             );
           })
-          .map(function (cacheName) {
+          .map(function(cacheName) {
             return caches.delete(cacheName);
           })
       );
@@ -53,7 +53,7 @@ self.addEventListener("activate", function (event) {
   );
 });
 
-self.addEventListener("fetch", function (event) {
+self.addEventListener("fetch", function(event) {
   var requestUrl = new URL(event.request.url);
 
   if (requestUrl.origin === location.origin) {
@@ -73,7 +73,7 @@ self.addEventListener("fetch", function (event) {
   }
 
   event.respondWith(
-    caches.match(event.request).then(function (response) {
+    caches.match(event.request).then(function(response) {
       return response || fetch(event.request);
     })
   );
@@ -82,11 +82,11 @@ self.addEventListener("fetch", function (event) {
 function servePhoto(request) {
   var storageUrl = request;
 
-  return caches.open(contentImgsCache).then(function (cache) {
-    return cache.match(storageUrl).then(function (response) {
+  return caches.open(contentImgsCache).then(function(cache) {
+    return cache.match(storageUrl).then(function(response) {
       if (response) return response;
 
-      return fetch(request, myInit).then(function (networkResponse) {
+      return fetch(request, myInit).then(function(networkResponse) {
         cache.put(storageUrl, networkResponse.clone());
         return networkResponse;
       });
@@ -94,7 +94,7 @@ function servePhoto(request) {
   });
 }
 
-self.addEventListener("message", function (event) {
+self.addEventListener("message", function(event) {
   if (event.data.action === "skipWaiting") {
     self.skipWaiting();
   }

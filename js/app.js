@@ -1,6 +1,5 @@
 // var app = app || {};
-var app = (function () {
-
+var app = (function() {
   const flags = {
     envForceProduction: false, // Default is false. Set to true to force "Production" configurations on "Development"
     serviceWorkerEnabled: true
@@ -15,7 +14,7 @@ var app = (function () {
   };
 
   let settings = {
-    init: function () {
+    init: function() {
       // let config = this.config;
       // config["isDevelopmentEnvironment"] = false;
       config["isDevelopmentEnvironment"] = !flags.envForceProduction
@@ -52,7 +51,6 @@ var app = (function () {
     getApiPhotographFormat: getApiPhotographFormat,
     loadServiceWorker: loadServiceWorker
   };
-
 })();
 
 export { app };
