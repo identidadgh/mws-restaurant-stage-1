@@ -2,6 +2,7 @@
 var app = (function () {
 
   const flags = {
+    envForceProduction: false, // Default is false. Set to true to force "Production" configurations on "Development"
     serviceWorkerEnabled: true
   };
 
@@ -18,7 +19,8 @@ var app = (function () {
       // let config = this.config;
       // config["isDevelopmentEnvironment"] = false;
       config["isDevelopmentEnvironment"] = !flags.envForceProduction
-        ? window.location.hostname === "localhost"
+        ? window.location.hostname === "localhost" ||
+          window.location.hostname === "127.0.0.1"
         : false;
 
       if (config.isDevelopmentEnvironment) {
