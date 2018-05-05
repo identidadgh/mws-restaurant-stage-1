@@ -1,6 +1,7 @@
 import { app as myApp } from "./app.js";
 import DBHelper from "./dbhelper.js";
 
+(function() {
 // console.log("test cube: ", cube(2));
 // var myApp = myApp || {};
 
@@ -347,3 +348,4 @@ const addMarkersToMap = (restaurants = self.restaurants) => {
     });
 };
 console.groupEnd();
+})();
