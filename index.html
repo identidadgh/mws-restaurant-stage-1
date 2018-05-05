@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="modulepreload" href="js/app.js">
   <link rel="modulepreload" href="js/dbhelper.js">
-  <!-- <link rel="modulepreload" href="js/main.js"> -->
+  <link rel="modulepreload" href="js/main.js">
 
   <title>Restaurant Reviews</title>
 </head>
@@ -58,8 +58,25 @@
   <script defer src="js/main.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQ6ibwJm_GvwMrmAlZ2gBqgez1392EsY0&libraries=places&callback=initMap"></script> -->
   
-  <script type="module" src="js/main.js"></script>
+  <script>
+    /**
+     * Initialize Google map, called from HTML.
+     */
+    window.initMap = () => {
+      let loc = {
+        lat: 40.722216,
+        lng: -73.987501
+      };
+      self.map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 12,
+        center: loc,
+        scrollwheel: false
+      });
+      // updateRestaurants();
+    };
+    </script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQ6ibwJm_GvwMrmAlZ2gBqgez1392EsY0&libraries=places&callback=initMap"></script>
+  <script type="module" src="js/main.js"></script>
   
   <!-- <script defer src="js/dbhelper.js"></script>
   <script defer src="js/main.js"></script>
