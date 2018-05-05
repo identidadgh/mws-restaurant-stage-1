@@ -2,7 +2,7 @@
 var app = (function () {
 
   const flags = {
-    envForceProduction: false // Default is false. Set to true to force "Production" configurations on "Development"
+    serviceWorkerEnabled: true
   };
 
   let config = {
@@ -38,12 +38,16 @@ var app = (function () {
     return config.databaseUrl;
   }
 
+  function loadServiceWorker() {
+    return flags.serviceWorkerEnabled;
+  }
+
   settings.init();
   console.log("Configuration: ", config);
 
   return {
     getDatabaseUrl: getDatabaseUrl,
-    getApiPhotographFormat: getApiPhotographFormat
+    loadServiceWorker: loadServiceWorker
   };
 
 })();

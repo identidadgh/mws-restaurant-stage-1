@@ -44,8 +44,7 @@ var allCaches = [staticCacheName, contentImgsCache];
 /**
  * Register a serviceworker from each page, because they can all be the entrypoint.
  */
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function () {
+  if (myApp.loadServiceWorker() && "serviceWorker" in navigator) {
         navigator.serviceWorker
             .register("service-worker.js", { scope: "./" })
             .then(reg => console.log(["SW registered!", reg]))
