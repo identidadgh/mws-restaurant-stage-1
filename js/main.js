@@ -46,15 +46,17 @@ var allCaches = [staticCacheName, contentImgsCache];
  * Register a serviceworker from each page, because they can all be the entrypoint.
  */
   if (myApp.loadServiceWorker() && "serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
         navigator.serviceWorker
             .register("service-worker.js", { scope: "./" })
             .then(reg => console.log(["SW registered!", reg]))
-            .then(function () {
+        .then(function() {
                 console.groupCollapsed("Getting loaded images upon sw register!");
                 // const allImageElements = document.getElementsByTagName('img');
                 const allImageElements = document.getElementsByClassName(
                     "restaurant-img"
                 );
+          if (allImageElements.length > 0) {
                 let allImages = [];
                 for (const item of allImageElements) {
                     let individual = new URL(item.currentSrc);
@@ -62,10 +64,11 @@ var allCaches = [staticCacheName, contentImgsCache];
                     allImages.push(individual.pathname);
                 }
                 console.groupEnd();
-                caches.open(contentImgsCache).then(function (cache) {
+            caches.open(contentImgsCache).then(function(cache) {
                     console.log(["Caching loaded images: ", allImages]);
                     return cache.addAll(allImages);
                 });
+          }
             })
             .catch(err => console.log("SW registration failed!", err));
     });
