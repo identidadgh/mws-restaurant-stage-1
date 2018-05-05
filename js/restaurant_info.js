@@ -106,9 +106,11 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const address = document.getElementById("restaurant-address");
   address.innerHTML = restaurant.address;
 
+  const image = document.getElementById("restaurant-img");
+
+  if (typeof restaurant.photograph != "undefined") {
   const figure = document.createElement("figure");
 
-  const image = document.getElementById("restaurant-img");
   image.className = "restaurant-img";
   const image_title = "Restaurant " + restaurant.name;
   const image_description =
@@ -136,7 +138,16 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   image.parentNode.insertBefore(figure, image);
   figure.append(image);
   figure.append(figcaption);
+  } else {
+    const parentSection = image.parentNode;
 
+    let div = document.createElement("div");
+    div.className = "error-no-results";
+    div.innerText =
+      "Unfortunately, there were no images returned for this restaurant.";
+    // li.append(div);
+    parentSection.replaceChild(div, image);
+  }
   const cuisine = document.getElementById("restaurant-cuisine");
   cuisine.innerHTML = restaurant.cuisine_type;
 
