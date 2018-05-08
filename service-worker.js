@@ -1,5 +1,5 @@
 console.group("service-worker.js");
-var staticCacheName = "gezelligheid-static-v1";
+var staticCacheName = "gezelligheid-static-v2";
 var contentImgsCache = "gezelligheid-content-imgs-v1";
 var allCaches = [staticCacheName, contentImgsCache];
 
@@ -22,6 +22,7 @@ self.addEventListener("install", function(event) {
         "./restaurant.html",
         "./js/app.js",
         "./js/dbhelper.js",
+        "./js/idb.js",
         "./js/main.js",
         "./js/restaurant_info.js",
         "./data/restaurants.json",

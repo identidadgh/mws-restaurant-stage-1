@@ -2,7 +2,8 @@
 var app = (function() {
   const flags = {
     envForceProduction: false, // Default is false. Set to true to force "Production" configurations on "Development"
-    serviceWorkerEnabled: true
+    serviceWorkerEnabled: true,
+    debugIndexDBEnabled: false
   };
 
   let config = {
@@ -10,7 +11,13 @@ var app = (function() {
     isDevelopmentEnvironment: "",
     apiPhotographFormat: "",
     databaseUrl: "data/restaurants.json",
-    dataFormat: "restaurants"
+    dataFormat: "restaurants",
+    clientDatabase: {
+      name: "gezelligheid",
+      objectStoreName: "restaurants",
+      version: 2,
+      filters: ["neighborhood", "cuisine_type"]
+    }
   };
 
   let settings = {
@@ -35,6 +42,10 @@ var app = (function() {
     return config.apiPhotographFormat;
   }
 
+  function getClientDatabase() {
+    return config.clientDatabase;
+  }
+
   function getDatabaseUrl() {
     return config.databaseUrl;
   }
@@ -47,6 +58,8 @@ var app = (function() {
   console.log("Configuration: ", config);
 
   return {
+    flags: flags,
+    getClientDatabase: getClientDatabase,
     getDatabaseUrl: getDatabaseUrl,
     getApiPhotographFormat: getApiPhotographFormat,
     loadServiceWorker: loadServiceWorker
