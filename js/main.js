@@ -177,8 +177,8 @@ import DBHelper from "./dbhelper.js";
     const cSelect = document.getElementById("cuisines-select");
     const nSelect = document.getElementById("neighborhoods-select");
 
-    const cIndex = cSelect.selectedIndex;
-    const nIndex = nSelect.selectedIndex;
+    const cIndex = cSelect.selectedIndex >= 0 ? cSelect.selectedIndex : 0;
+    const nIndex = nSelect.selectedIndex >= 0 ? nSelect.selectedIndex : 0;
 
     const cuisine = cSelect[cIndex].value;
     const neighborhood = nSelect[nIndex].value;
