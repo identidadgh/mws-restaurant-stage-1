@@ -17,6 +17,7 @@ self.addEventListener("install", function(event) {
   event.waitUntil(
     caches.open(staticCacheName).then(function(cache) {
       const staticCacheContent = [
+        "./favicon.ico",
         "./",
         "./index.html",
         "./restaurant.html",
