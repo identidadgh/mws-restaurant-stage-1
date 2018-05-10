@@ -18,6 +18,7 @@ self.addEventListener("install", function(event) {
     caches.open(staticCacheName).then(function(cache) {
       const staticCacheContent = [
         "./favicon.ico",
+        "./manifest.webmanifest",
         "./",
         "./index.html",
         "./restaurant.html",
@@ -28,7 +29,8 @@ self.addEventListener("install", function(event) {
         "./js/restaurant_info.js",
         "./data/restaurants.json",
         "./css/styles.css",
-        "./img/icon.png"
+        "./img/icon.png",
+        "./img/icon-no-image.png"
       ];
       console.log(["Caching static content: ", staticCacheContent]);
       return cache.addAll(staticCacheContent);
@@ -88,9 +90,13 @@ function servePhoto(request) {
     return cache.match(storageUrl).then(function(response) {
       if (response) return response;
 
-      return fetch(request, myInit).then(function(networkResponse) {
+      return fetch(request, myInit)
+        .then(function(networkResponse) {
         cache.put(storageUrl, networkResponse.clone());
         return networkResponse;
+        })
+        .catch(e => {
+          console.log("servePhoto Fetch Error: ", e);
       });
     });
   });
