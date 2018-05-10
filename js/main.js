@@ -279,7 +279,7 @@ import DBHelper from "./dbhelper.js";
   const createRestaurantHTML = restaurant => {
     const li = document.createElement("li");
 
-    li.className = "box";
+    li.className = "box restaurant";
     li.setAttribute("role", "treeitem");
 
     if (typeof restaurant.photograph != "undefined") {

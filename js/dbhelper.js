@@ -48,66 +48,71 @@ export default class DBHelper {
     return database_url;
   }
 
+  /**
+   * Get all restaurants from indexedDB
+   * @return Promise coming from DBHelper.openDatabase
+   */
   static fetchRestaurantsCached() {
     console.log("from: fetchRestaurantsCached");
-    let _dbPromise = DBHelper.openDatabase();
-
-    return _dbPromise.then(db => {
+    return DBHelper.openDatabase().then(db => {
       console.log("from: fetchRestaurantsCached: in promise");
       if (!db) return; //@todo or already showing restaurants
+
       const database = myApp.getClientDatabase();
       let tx = db.transaction(database.objectStoreName);
       let store = tx.objectStore(database.objectStoreName);
       // let store = tx.objectStore(database.objectStoreName).index("by-cuisine_type");
+
       return store.getAll();
     });
+  }
+
+  /**
+   * Fetch all restaurants from the API server
+   * @return Promise
+   */
+  static fetchRestaurantsOnline() {
+    return fetch(DBHelper.DATABASE_URL)
+      .then(response => response.json())
+      .then(function(data) {
+        let _dbPromise = DBHelper.openDatabase();
+
+        _dbPromise.then(db => {
+          if (!db) return;
+          const database = myApp.getClientDatabase();
+          let tx = db.transaction(database.objectStoreName, "readwrite");
+          let store = tx.objectStore(database.objectStoreName);
+          data.forEach(restaurant => {
+            store.put(restaurant);
+          });
+        });
+        console.log("Restaurants Fetched: ", data);
+        return data;
+      })
+      .catch(e => {
+        console.log("Fetch Restaurants from Network Error", e);
+      });
   }
 
   /**
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
-    // @todo use promise.race ? https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race
-    const fetchRestaurantsCachedPromise = DBHelper.fetchRestaurantsCached();
-    fetchRestaurantsCachedPromise
+    DBHelper.fetchRestaurantsCached()
       .then(dataCached => {
         console.log("Restaurants Cached: ", dataCached);
 
-        fetch(DBHelper.DATABASE_URL)
-          .then(response => response.json())
-          // .then(tussendoor => console.log("tussendoor: ", tussendoor))
-          .then(function(data) {
-            let _dbPromise = DBHelper.openDatabase();
+        // dataCached can either be "undefined" when there is no db
+        // OR it can be a Promise coming from DBHelper.openDatabase
+        // Therefore we return a Promise.resolve() which is suitable for
+        // a returned value or returned Promise. Either case we return a Promise.
+        if (dataCached.length > 0) return Promise.resolve(dataCached);
 
-            _dbPromise.then(db => {
-              if (!db) return;
-              const database = myApp.getClientDatabase();
-              let tx = db.transaction(database.objectStoreName, "readwrite");
-              let store = tx.objectStore(database.objectStoreName);
-              data.forEach(restaurant => {
-                store.put(restaurant);
-              });
-              // return store.get("hello");
-              // })
-              // .then(val => {
-              //   console.log(`The value of the key hello is: ${val}`);
-            });
-
-            // let dataFormat = (myApp.config.dataFormat)
-            //   ? data[myApp.config.dataFormat]
-            //   : data;
-            // return callback(null, dataFormat);
-            console.log("Restaurants Fetched: ", data);
-            return callback(null, data);
-          })
-          // .then(data => callback(null, data["restaurants"]))
-          // .then(data => callback(null, data))
-          .catch(e => {
-            // callback("Fetch Restaurants Error", null);
-            console.log("Fetch Restaurants from Network Error", e);
-          });
-
-        return callback(null, dataCached);
+        // Then we proceed to return a Promise coming from the Fetch API.
+        return DBHelper.fetchRestaurantsOnline();
+      })
+      .then(data => {
+        return callback(null, data);
       })
       .catch(e => {
         console.log("FetchRestaurantsCached Error: ", e);
