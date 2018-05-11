@@ -1,3 +1,4 @@
+import ToastsView from "./views/Toasts.js";
 // var app = app || {};
 var app = (function() {
   const flags = {
@@ -38,6 +39,32 @@ var app = (function() {
     }
   };
 
+  let controller = {
+    _updateReady: function() {
+      let toast = new ToastsView();
+      toast.showToast("Update ready! Waiting to activate");
+    },
+    // using an arrow function here for worker, errors in _updateReady not being defined.
+    _trackInstalling: function(worker) {
+      const self = this;
+      // In the worker we are going to listen to its statechange event.
+      worker.addEventListener("statechange", function() {
+        if (worker.state == "installed") {
+          // notify the user
+          self._updateReady();
+        }
+      });
+    }
+  };
+
+  let utils = {
+    parseHTML: function(opt_HTML) {
+      let contextRange = document.createRange();
+      contextRange.setStart(document.body, 0);
+      return contextRange.createContextualFragment(opt_HTML);
+    }
+  };
+
   function getApiPhotographFormat() {
     return config.apiPhotographFormat;
   }
@@ -59,6 +86,7 @@ var app = (function() {
 
   return {
     flags: flags,
+    controller: controller,
     getClientDatabase: getClientDatabase,
     getDatabaseUrl: getDatabaseUrl,
     getApiPhotographFormat: getApiPhotographFormat,

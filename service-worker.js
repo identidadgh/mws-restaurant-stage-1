@@ -1,3 +1,4 @@
+// boosaaddsaa
 console.group("service-worker.js");
 var staticCacheName = "gezelligheid-static-v2";
 var contentImgsCache = "gezelligheid-content-imgs-v1";
@@ -15,26 +16,32 @@ var myInit = {
 
 self.addEventListener("install", function(event) {
   event.waitUntil(
-    caches.open(staticCacheName).then(function(cache) {
-      const staticCacheContent = [
-        "./favicon.ico",
-        "./manifest.webmanifest",
-        "./",
-        "./index.html",
-        "./restaurant.html",
-        "./js/app.js",
-        "./js/dbhelper.js",
-        "./js/idb.js",
-        "./js/main.js",
-        "./js/restaurant_info.js",
-        "./data/restaurants.json",
-        "./css/styles.css",
-        "./img/icon.png",
-        "./img/icon-no-image.png"
-      ];
-      console.log(["Caching static content: ", staticCacheContent]);
-      return cache.addAll(staticCacheContent);
-    })
+    caches
+      .open(staticCacheName)
+      .then(function(cache) {
+        const staticCacheContent = [
+          "./favicon.ico",
+          "./manifest.webmanifest",
+          "./",
+          "./index.html",
+          "./restaurant.html",
+          "./js/views/Toasts.js",
+          "./js/app.js",
+          "./js/dbhelper.js",
+          "./js/idb.js",
+          "./js/main.js",
+          "./js/restaurant_info.js",
+          "./data/restaurants.json",
+          "./css/styles.css",
+          "./img/icon.png",
+          "./img/icon-no-image.png"
+        ];
+        console.log(["Caching static content: ", staticCacheContent]);
+        return cache.addAll(staticCacheContent);
+      })
+      .catch(e => {
+        console.error("Service worker caches error: ", e);
+      })
   );
 });
 
@@ -92,18 +99,20 @@ function servePhoto(request) {
 
       return fetch(request, myInit)
         .then(function(networkResponse) {
-        cache.put(storageUrl, networkResponse.clone());
-        return networkResponse;
+          cache.put(storageUrl, networkResponse.clone());
+          return networkResponse;
         })
         .catch(e => {
           console.log("servePhoto Fetch Error: ", e);
-      });
+        });
     });
   });
 }
 
 self.addEventListener("message", function(event) {
   if (event.data.action === "skipWaiting") {
+    // Do not queu behind another service worker while it's waiting or installing. Take over straight away.
+    // This should be called when the user hits a refresh button on our Toast with update notification.
     self.skipWaiting();
   }
 });

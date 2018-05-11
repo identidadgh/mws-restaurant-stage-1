@@ -50,7 +50,43 @@ import DBHelper from "./dbhelper.js";
     window.addEventListener("load", function() {
       navigator.serviceWorker
         .register("service-worker.js", { scope: "./" })
-        .then(reg => console.log(["SW registered!", reg]))
+        .then(reg => {
+          console.log(["SW registered!", reg]);
+          /**
+           * No controller (./service-worker.js) means page was not loaded via serviceworker,
+           * meaning they have the latest version. So this is the latest version.
+           * We then exit early.
+           */
+          if (!navigator.serviceWorker.controller) return;
+
+          /**
+           * If there is a serviceworker waiting, we call the updateReady function
+           * which triggers a notification Toast. Then we return.
+           */
+          if (reg.waiting) {
+            myApp.controller._updateReady(reg.waiting);
+            return;
+          }
+
+          /**
+           * If there is an updated service worker installing, we track its progress
+           * and if it becomes "installed" we call trackInstalling function.
+           */
+          if (reg.installing) {
+            myApp.controller._trackInstalling(reg.installing);
+            return;
+          }
+
+          /**
+           * If there is not an installing service worker we listen for any
+           * new installing service workers arriving.
+           * To know if there is one we listen for event firing of "updatefound".
+           * Then we track its progress.
+           */
+          reg.addEventListener("updatefound", () => {
+            myApp.controller._trackInstalling(reg.installing);
+          });
+        })
         .then(function() {
           console.groupCollapsed("Getting loaded images upon sw register!");
           // const allImageElements = document.getElementsByTagName('img');
