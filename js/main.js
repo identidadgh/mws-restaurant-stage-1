@@ -86,6 +86,17 @@ import DBHelper from "./dbhelper.js";
           reg.addEventListener("updatefound", () => {
             myApp.controller._trackInstalling(reg.installing);
           });
+
+          /**
+           * Listen for the service worker controller (./service-worker.js) changing.
+           * Then reload current page --without using the cache--
+           */
+          let refreshed;
+          self.addEventListener("controllerchange", function() {
+            if (refreshed) return;
+            window.location.reload();
+            refreshed = true;
+          });
         })
         .then(function() {
           console.groupCollapsed("Getting loaded images upon sw register!");
