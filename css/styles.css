@@ -4,19 +4,24 @@
 html {
   box-sizing: border-box;
 }
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
-body,td,th,p{
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 1.25em;
-	color: #262831;
-	line-height: 1.5;
+body,
+td,
+th,
+p {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.25em;
+  color: #262831;
+  line-height: 1.5;
 }
 body {
-	background-color: #fdfdfd;
-	margin: 0;
-	position:relative;
+  background-color: #fdfdfd;
+  margin: 0;
+  position: relative;
 }
 button:-moz-focus-inner {
 	border:0;
@@ -27,20 +32,21 @@ button {
 }
 ul,
 li {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 1em;
-	color: #333;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1em;
+  color: #333;
 }
 a {
-	color: orange;
-	text-decoration: none;
+  color: orange;
+  text-decoration: none;
 }
-a:hover, a:focus {
-	color: #3397db;
-	text-decoration: none;
+a:hover,
+a:focus {
+  color: #3397db;
+  text-decoration: none;
 }
-a img{
-	border: none 0px #fff;
+a img {
+  border: none 0px #fff;
 }
 a[href] {
   text-decoration: none;
@@ -48,24 +54,41 @@ a[href] {
   padding: 0 1px 0;
   margin: 0 -1px 0;
 }
-a[href]:focus, a[href]:hover {
+a[href]:focus,
+a[href]:hover {
   background: #f8f8f8;
   border-bottom-width: 3px;
   margin-bottom: -2px;
 }
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0 0 20px;
 }
-article, aside, canvas, details, figcaption, footer, header, hgroup, menu, nav, section {
-	display: block;
-	width: 100%;
+article,
+aside,
+canvas,
+details,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+  width: 100%;
 }
 figure {
   margin: 0;
 }
-a:focus, select:focus {
-  box-shadow: 0 0 1em .5em red;
+a:focus,
+select:focus {
+  box-shadow: 0 0 1em 0.5em red;
   outline: 0;
 }
 .boxes {
@@ -76,11 +99,11 @@ a:focus, select:focus {
 .box {
   flex-direction: column;
   display: flex;
-  justify-content:  space-between;
+  justify-content: space-between;
 }
 .fieldKey {
   font-size: 1.25em;
-  display:  block;
+  display: block;
 }
 #maincontent {
   background-color: #f3f3f3;
@@ -100,8 +123,8 @@ nav {
   width: 100%;
   height: auto;
   background-color: #252831;
-  text-align:center;
-  padding:  1em;
+  text-align: center;
+  padding: 1em;
 }
 nav h1 {
   margin: auto;
@@ -110,7 +133,7 @@ nav h1 a {
   color: #fff;
   font-size: 14pt;
   font-weight: 200;
-  letter-spacing: .25em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
 }
 #breadcrumb {
@@ -123,17 +146,17 @@ nav h1 a {
 
 /* Display list items side by side */
 #breadcrumb li {
-    display: inline;
+  display: inline;
 }
 
 /* Add a slash symbol (/) before/behind each list item */
-#breadcrumb li+li:before {
-    display: inline-block;
-    margin: 0 .25em;
-    transform: rotate(15deg);
-    border-right: .1em solid currentColor;
-    height: .8em;
-    content: '';
+#breadcrumb li + li:before {
+  display: inline-block;
+  margin: 0 0.25em;
+  transform: rotate(15deg);
+  border-right: 0.1em solid currentColor;
+  height: 0.8em;
+  content: "";
 }
 
 #breadcrumb [aria-current="page"] {
@@ -144,14 +167,14 @@ nav h1 a {
 
 /* Add a color to all links inside the list */
 #breadcrumb li a {
-    color: #0275d8;
-    text-decoration: none;
+  color: #0275d8;
+  text-decoration: none;
 }
 
 /* Add a color on mouse-over */
 #breadcrumb li a:hover {
-    color: #01447e;
-    text-decoration: underline;
+  color: #01447e;
+  text-decoration: underline;
 }
 /* ====================== Map ====================== */
 #map-container {
@@ -181,7 +204,7 @@ nav h1 a {
 .filter-options select {
   background-color: white;
   border: 1px solid #fff;
-  font-family: Arial,sans-serif;
+  font-family: Arial, sans-serif;
   font-size: 11pt;
   height: 35px;
   letter-spacing: 0;
@@ -201,7 +224,7 @@ nav h1 a {
 #restaurants-list li {
   background-color: #fff;
   border: 2px solid #ccc;
-  font-family: Arial,sans-serif;
+  font-family: Arial, sans-serif;
   margin: 15px;
   min-height: 380px;
   padding: 1em 2em;
@@ -216,7 +239,7 @@ nav h1 a {
 }
 #restaurants-list li h1 {
   color: #262831;
-  font-family: Arial,sans-serif;
+  font-family: Arial, sans-serif;
   font-size: 1.5em;
   font-weight: 200;
   letter-spacing: 0;
@@ -263,15 +286,18 @@ nav h1 a {
   position: absolute;
   width: 100%;
 }
-#restaurant-name, #map-name {
+#restaurant-name,
+#map-name {
   margin: 4em 0 30px;
 }
 #reviews-name {
   margin: 1em 0 1em;
 }
-#restaurant-name, #map-name, #reviews-name {
+#restaurant-name,
+#map-name,
+#reviews-name {
   color: #f18200;
-  font-family: Arial,sans-serif;
+  font-family: Arial, sans-serif;
   font-size: 1.25em;
   font-weight: 200;
   letter-spacing: 0;
@@ -279,7 +305,7 @@ nav h1 a {
   line-height: 1.1;
 }
 #restaurant-img {
-	width: 90%;
+  width: 90%;
 }
 #restaurant-address {
   font-size: 1.25em;
@@ -298,12 +324,14 @@ nav h1 a {
   width: 90%;
 }
 .inside #restaurant-container {
-  padding: 7.5em .25em 30px;
+  padding: 7.5em 0.25em 30px;
 }
-.inside #map-container, #reviews-container {
-  padding: 0 .25em 0;
+.inside #map-container,
+#reviews-container {
+  padding: 0 0.25em 0;
 }
-#restaurant-container, #reviews-container {
+#restaurant-container,
+#reviews-container {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
   width: 100%;
@@ -404,20 +432,23 @@ nav h1 a {
 }
 
 @media screen and (min-width: 225px) {
-  #restaurant-name, #map-name {
+  #restaurant-name,
+  #map-name {
     margin-top: 3.25em;
   }
 }
 
 @media screen and (min-width: 350px) {
-  #restaurant-name, #map-name {
+  #restaurant-name,
+  #map-name {
     margin-top: 1.5em;
   }
 }
 
 @media screen and (min-width: 500px) {
-  .inside #map-container, #restaurant-container {
-    padding: 7.5em .25em 30px;
+  .inside #map-container,
+  #restaurant-container {
+    padding: 7.5em 0.25em 30px;
     width: 50%;
   }
   #restaurants-list li {
@@ -426,7 +457,8 @@ nav h1 a {
   .filter-options select {
     width: 50%;
   }
-  #restaurant-name, #map-name {
+  #restaurant-name,
+  #map-name {
     margin-top: 1.25em;
   }
 }
