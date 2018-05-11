@@ -40,11 +40,15 @@ var app = (function() {
   };
 
   let controller = {
-    _updateReady: function() {
+    /**
+     * Whenever there's an update ready to show.
+     */
+    _updateReady: function(worker) {
       let toast = new ToastsView();
       toast.showToast("Update ready! Waiting to activate");
     },
     // using an arrow function here for worker, errors in _updateReady not being defined.
+    // worker is serviceworker's reg.installing
     _trackInstalling: function(worker) {
       const self = this;
       // In the worker we are going to listen to its statechange event.
@@ -52,6 +56,12 @@ var app = (function() {
         if (worker.state == "installed") {
           // notify the user
           self._updateReady();
+          /**
+           * If the user's response was to refresh, we do skipWaiting for install.
+           * Otherwise the new service worker would just sit there and be installed
+           * only when the user navigates to another page or closes the tab.
+           */
+          worker.postMessage({ action: "skipWaiting" });
         }
       });
     }

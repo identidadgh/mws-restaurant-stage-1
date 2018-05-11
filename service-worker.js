@@ -111,8 +111,11 @@ function servePhoto(request) {
 
 self.addEventListener("message", function(event) {
   if (event.data.action === "skipWaiting") {
-    // Do not queu behind another service worker while it's waiting or installing. Take over straight away.
-    // This should be called when the user hits a refresh button on our Toast with update notification.
+    /**
+     * Do not queu behind another service worker while it's waiting or installing.
+     * Take over straight away.
+     * This should be called when the user hits a refresh button on our Toast with update notification.
+     */
     self.skipWaiting();
   }
 });
