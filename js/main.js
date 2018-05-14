@@ -282,7 +282,7 @@ import DBHelper from "./dbhelper.js";
       );
     }
 
-    ul.setAttribute("role", "alert");
+    ul.setAttribute("role", "tree");
     addMarkersToMap();
   };
 
