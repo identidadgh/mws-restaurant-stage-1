@@ -269,7 +269,7 @@ import DBHelper from "./dbhelper.js";
   const fillRestaurantsHTML = (restaurants = self.restaurants) => {
     const ul = document.getElementById("restaurants-list");
     // Check if there are at least 1 restaurant in the results.
-    if (Object.keys(restaurants).length > 1) {
+    if (Object.keys(restaurants).length > 0) {
       restaurants.forEach(restaurant => {
         ul.append(createRestaurantHTML(restaurant));
       });
