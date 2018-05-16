@@ -39,6 +39,13 @@ var app = (function() {
     }
   };
 
+  let resources = {
+    styles: [
+      "css/styles.css",
+      "//necolas.github.io/normalize.css/latest/normalize.css"
+    ]
+  };
+
   let controller = {
     /**
      * Whenever there's an update ready to show.
@@ -100,7 +107,8 @@ var app = (function() {
     getClientDatabase: getClientDatabase,
     getDatabaseUrl: getDatabaseUrl,
     getApiPhotographFormat: getApiPhotographFormat,
-    loadServiceWorker: loadServiceWorker
+    loadServiceWorker: loadServiceWorker,
+    resources: resources
   };
 })();
 
