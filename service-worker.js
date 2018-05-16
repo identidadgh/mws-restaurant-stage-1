@@ -1,8 +1,23 @@
 // boosaaddsaa
 console.group("service-worker.js");
-var staticCacheName = "gezelligheid-static-v2";
-var contentImgsCache = "gezelligheid-content-imgs-v1";
-var allCaches = [staticCacheName, contentImgsCache];
+/**
+ * Any changes made to the version and naming of the caches need to
+ * happen in ./js/cache.js module file also.
+ * There is currently no ES6 modules support in Service Workers yet.
+ * https://hospodarets.com/es-modules-test/
+ */
+const app_cache = (function() {
+  let config = {
+    staticCacheName: "gezelligheid-static-v1",
+    contentImgsCache: "gezelligheid-content-imgs-v1"
+  };
+
+  config.allCaches = [config.staticCacheName, config.contentImgsCache];
+
+  return {
+    config: config
+  };
+})();
 
 var myHeaders = new Headers();
 myHeaders.append("Content-Type", "image/jpg");
@@ -17,7 +32,7 @@ var myInit = {
 self.addEventListener("install", function(event) {
   event.waitUntil(
     caches
-      .open(staticCacheName)
+      .open(app_cache.config.staticCacheName)
       .then(function(cache) {
         const staticCacheContent = [
           "./favicon.ico",
@@ -27,6 +42,7 @@ self.addEventListener("install", function(event) {
           "./restaurant.html",
           "./js/views/Toasts.js",
           "./js/app.js",
+          "./js/app_cache.js",
           "./js/dbhelper.js",
           "./js/idb.js",
           "./js/main.js",
@@ -53,7 +69,7 @@ self.addEventListener("activate", function(event) {
           .filter(function(cacheName) {
             return (
               cacheName.startsWith("gezelligheid-") &&
-              !allCaches.includes(cacheName)
+              !app_cache.config.allCaches.includes(cacheName)
             );
           })
           .map(function(cacheName) {
@@ -93,7 +109,7 @@ self.addEventListener("fetch", function(event) {
 function servePhoto(request) {
   var storageUrl = request;
 
-  return caches.open(contentImgsCache).then(function(cache) {
+  return caches.open(app_cache.config.contentImgsCache).then(function(cache) {
     return cache.match(storageUrl).then(function(response) {
       if (response) return response;
 

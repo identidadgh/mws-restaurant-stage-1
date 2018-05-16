@@ -1,3 +1,4 @@
+import { cache as app_cache } from "./app_cache.js";
 import ToastsView from "./views/Toasts.js";
 
 var app = (function() {
@@ -83,6 +84,9 @@ var app = (function() {
   /**
    * Bind events
    */
+  window.addEventListener("load", function() {
+    _registerServiceWorker();
+  });
   document.addEventListener("DOMContentLoaded", event => {
     loadResources();
   });
@@ -103,6 +107,86 @@ var app = (function() {
     });
   };
 
+  let _cacheImages = function() {
+    console.groupCollapsed("Getting loaded images upon sw register!");
+    const allImageElements = document.getElementsByClassName("restaurant-img");
+    if (allImageElements.length > 0) {
+      let allImages = [];
+      for (const item of allImageElements) {
+        let individual = new URL(item.currentSrc);
+        console.log(["Image pathname: ", individual.pathname]);
+        allImages.push(individual.pathname);
+      }
+      console.groupEnd();
+      caches.open(app_cache.config.contentImgsCache).then(function(cache) {
+        console.log(["Caching loaded images: ", allImages]);
+        return cache.addAll(allImages);
+      });
+    }
+  };
+
+  /**
+   * Register a serviceworker from each page, because they can all be the entrypoint.
+   */
+  let _registerServiceWorker = function() {
+    if (flags.serviceWorkerEnabled && "serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("service-worker.js", { scope: "./" })
+        .then(reg => {
+          console.log(["SW registered!", reg]);
+          /**
+           * No controller (./service-worker.js) means page was not loaded via serviceworker,
+           * meaning they have the latest version. So this is the latest version.
+           * We then exit early.
+           */
+          if (!navigator.serviceWorker.controller) return;
+
+          /**
+           * If there is a serviceworker waiting, we call the updateReady function
+           * which triggers a notification Toast. Then we return.
+           */
+          if (reg.waiting) {
+            controller._updateReady(reg.waiting);
+            return;
+          }
+
+          /**
+           * If there is an updated service worker installing, we track its progress
+           * and if it becomes "installed" we call trackInstalling function.
+           */
+          if (reg.installing) {
+            controller._trackInstalling(reg.installing);
+            return;
+          }
+
+          /**
+           * If there is not an installing service worker we listen for any
+           * new installing service workers arriving.
+           * To know if there is one we listen for event firing of "updatefound".
+           * Then we track its progress.
+           */
+          reg.addEventListener("updatefound", () => {
+            controller._trackInstalling(reg.installing);
+          });
+
+          /**
+           * Listen for the service worker controller (./service-worker.js) changing.
+           * Then reload current page --without using the cache--
+           */
+          let refreshed;
+          self.addEventListener("controllerchange", function() {
+            if (refreshed) return;
+            window.location.reload();
+            refreshed = true;
+          });
+        })
+        .then(_cacheImages)
+        .catch(err => console.log("SW registration failed!", err));
+    } else {
+      console.log("Service workers are not enabled or not supported.");
+    }
+  };
+
   function getApiPhotographFormat() {
     return config.apiPhotographFormat;
   }
@@ -115,10 +199,6 @@ var app = (function() {
     return config.databaseUrl;
   }
 
-  function loadServiceWorker() {
-    return flags.serviceWorkerEnabled;
-  }
-
   settings.init();
   console.log("Configuration: ", config);
 
@@ -127,8 +207,7 @@ var app = (function() {
     controller: controller,
     getClientDatabase: getClientDatabase,
     getDatabaseUrl: getDatabaseUrl,
-    getApiPhotographFormat: getApiPhotographFormat,
-    loadServiceWorker: loadServiceWorker
+    getApiPhotographFormat: getApiPhotographFormat
   };
 })();
 
