@@ -1,5 +1,5 @@
 import ToastsView from "./views/Toasts.js";
-// var app = app || {};
+
 var app = (function() {
   const flags = {
     envForceProduction: false, // Default is false. Set to true to force "Production" configurations on "Development"
@@ -23,8 +23,6 @@ var app = (function() {
 
   let settings = {
     init: function() {
-      // let config = this.config;
-      // config["isDevelopmentEnvironment"] = false;
       config["isDevelopmentEnvironment"] = !flags.envForceProduction
         ? window.location.hostname === "localhost" ||
           window.location.hostname === "127.0.0.1"

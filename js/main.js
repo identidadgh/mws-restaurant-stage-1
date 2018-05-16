@@ -3,42 +3,6 @@ import { app as myApp } from "./app.js";
 import DBHelper from "./dbhelper.js";
 
 (function() {
-  // console.log("test cube: ", cube(2));
-  // var myApp = myApp || {};
-
-  // myApp.flags = {
-  //     envForceProduction: false // Default is false. Set to true to force "Production" configurations on "Development"
-  // };
-
-  // myApp.config = {
-  //     envName: "Production",
-  //     isDevelopmentEnvironment: "",
-  //     apiPhotographFormat: "",
-  //     databaseUrl: "data/restaurants.json",
-  //     dataFormat: "restaurants"
-  // };
-
-  // myApp.settings = {
-  //     init: function () {
-  //         let config = myApp.config;
-  //         // config["isDevelopmentEnvironment"] = false;
-  //         config["isDevelopmentEnvironment"] = !myApp.flags.envForceProduction
-  //             ? window.location.hostname === "localhost"
-  //             : false;
-
-  //         if (myApp.config.isDevelopmentEnvironment) {
-  //             config["envName"] = "Development";
-  //             config["apiPhotographFormat"] = ".jpg";
-  //             config["databaseUrl"] = "http://localhost:1337/restaurants";
-  //             config["dataFormat"] = "";
-  //         }
-  //     }
-  // };
-
-  // myApp.settings.init();
-
-  // console.log("Configuration: ", myApp.config);
-
   console.group("main.js");
   var staticCacheName = "gezelligheid-static-v1";
   var contentImgsCache = "gezelligheid-content-imgs-v1";
@@ -275,7 +239,6 @@ import DBHelper from "./dbhelper.js";
     if (self.markers) {
       self.markers.forEach(m => m.setMap(null));
     }
-    // self.markers.forEach(m => m.setMap(null));
     self.markers = [];
     self.restaurants = restaurants;
   };
@@ -307,9 +270,7 @@ import DBHelper from "./dbhelper.js";
    * Restaurant image srcset attribute.
    */
   const imageSrcsetForRestaurant = (url, image_size) => {
-    // const imageName = url.replace('.jpg', '');
     const result = url.split(".").join(image_size + ".");
-    // console.log('imageSrcsetForRestaurant: ' + result);
     return result;
   };
 
@@ -351,7 +312,6 @@ import DBHelper from "./dbhelper.js";
 
       const image = document.createElement("img");
       image.className = "restaurant-img";
-      // const description = restaurant.name.append()
       const image_title = "Restaurant " + restaurant.name;
       const image_description =
         restaurant.cuisine_type + " cuisine in " + restaurant.neighborhood;

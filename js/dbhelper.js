@@ -53,9 +53,7 @@ export default class DBHelper {
    * @return Promise coming from DBHelper.openDatabase
    */
   static fetchRestaurantsCached() {
-    console.log("from: fetchRestaurantsCached");
     return DBHelper.openDatabase().then(db => {
-      console.log("from: fetchRestaurantsCached: in promise");
       if (!db) return; //@todo or already showing restaurants
 
       const database = myApp.getClientDatabase();
@@ -100,8 +98,6 @@ export default class DBHelper {
   static fetchRestaurants(callback) {
     DBHelper.fetchRestaurantsCached()
       .then(dataCached => {
-        console.log("Restaurants Cached: ", dataCached);
-
         // dataCached can either be "undefined" when there is no db
         // OR it can be a Promise coming from DBHelper.openDatabase
         // Therefore we return a Promise.resolve() which is suitable for

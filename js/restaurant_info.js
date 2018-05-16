@@ -16,7 +16,6 @@ if ("serviceWorker" in navigator) {
       .then(reg => console.log(["SW registered!", reg]))
       .then(function() {
         console.groupCollapsed("Getting loaded images upon sw register!");
-        // const allImageElements = document.getElementsByTagName('img');
         const allImageElements = document.getElementsByClassName(
           "restaurant-img"
         );
@@ -93,10 +92,8 @@ const fetchRestaurantFromURL = callback => {
  */
 const imageSrcsetForRestaurant = (url, image_size) => {
   console.log("imageSrcsetForRestaurant url: ", url);
-  // const imageName = url.replace('.jpg', '');
   const result = url.split(".jpg").join(image_size + ".jpg");
   console.log("Images string for srcset: ", result);
-  // return (`/img/${restaurant.photograph}`);
   return result;
 };
 
@@ -149,7 +146,6 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
     div.className = "error-no-results";
     div.innerText =
       "Unfortunately, there were no images returned for this restaurant.";
-    // li.append(div);
     parentSection.replaceChild(div, image);
   }
   const cuisine = document.getElementById("restaurant-cuisine");
