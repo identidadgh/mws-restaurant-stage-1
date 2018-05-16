@@ -296,7 +296,7 @@ nav h1 a {
 #restaurant-name,
 #map-name,
 #reviews-name {
-  color: #f18200;
+  color: unset;
   font-family: Arial, sans-serif;
   font-size: 1.25em;
   font-weight: 200;
