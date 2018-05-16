@@ -22,6 +22,11 @@
     "src": "./img/ic_restaurant_black_48dp/android/drawable-xxxhdpi/ic_restaurant_black_48dp.png",
     "type": "image/png",
     "sizes": "192x192"
+  },  
+  {  
+    "src": "/img/baseline-restaurant-512px.png",  
+    "sizes": "512x512",  
+    "type": "image/png"  
   }],
   "display": "standalone",
   "start_url": "./?utm_source=homescreen",
