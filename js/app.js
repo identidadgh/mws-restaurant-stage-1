@@ -80,6 +80,29 @@ var app = (function() {
     }
   };
 
+  /**
+   * Bind events
+   */
+  document.addEventListener("DOMContentLoaded", event => {
+    loadResources();
+  });
+
+  const loadResources = () => {
+    return new Promise(function(resolve) {
+      let stylesList = resources.styles;
+      let documentFragment = document.createDocumentFragment();
+      stylesList.forEach(function(sheet) {
+        let fileref = document.createElement("link");
+        fileref.setAttribute("rel", "stylesheet");
+        fileref.setAttribute("type", "text/css");
+        fileref.setAttribute("href", sheet);
+        documentFragment.appendChild(fileref);
+      });
+      document.querySelector("head").appendChild(documentFragment);
+      resolve();
+    });
+  };
+
   function getApiPhotographFormat() {
     return config.apiPhotographFormat;
   }
@@ -105,8 +128,7 @@ var app = (function() {
     getClientDatabase: getClientDatabase,
     getDatabaseUrl: getDatabaseUrl,
     getApiPhotographFormat: getApiPhotographFormat,
-    loadServiceWorker: loadServiceWorker,
-    resources: resources
+    loadServiceWorker: loadServiceWorker
   };
 })();
 

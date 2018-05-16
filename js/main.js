@@ -118,24 +118,7 @@ import DBHelper from "./dbhelper.js";
     updateRestaurants();
     fetchNeighborhoods();
     fetchCuisines();
-    loadResources();
   });
-
-  const loadResources = () => {
-    return new Promise(function(resolve) {
-      let stylesList = myApp.resources.styles;
-      let documentFragment = document.createDocumentFragment();
-      stylesList.forEach(function(sheet) {
-        let fileref = document.createElement("link");
-        fileref.setAttribute("rel", "stylesheet");
-        fileref.setAttribute("type", "text/css");
-        fileref.setAttribute("href", sheet);
-        documentFragment.appendChild(fileref);
-      });
-      document.querySelector("head").appendChild(documentFragment);
-      resolve();
-    });
-  };
 
   /**
    * Fetch all neighborhoods and set their HTML.
