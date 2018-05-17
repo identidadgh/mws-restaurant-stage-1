@@ -9,7 +9,8 @@ console.group("service-worker.js");
 const app_cache = (function() {
   let config = {
     staticCacheName: "gezelligheid-static-v1",
-    contentImgsCache: "gezelligheid-content-imgs-v1"
+    contentImgsCache: "gezelligheid-content-imgs-v1",
+    imagesRegex: /-\d*_\w*_\d+x\.jpg$/
   };
 
   config.allCaches = [config.staticCacheName, config.contentImgsCache];
@@ -48,9 +49,7 @@ self.addEventListener("install", function(event) {
           "./js/main.js",
           "./js/restaurant_info.js",
           "./data/restaurants.json",
-          "./css/styles.css",
-          "./img/icon.png",
-          "./img/icon-no-image.png"
+          "./css/styles.css"
         ];
         console.log(["Caching static content: ", staticCacheContent]);
         return cache.addAll(staticCacheContent);
@@ -107,7 +106,7 @@ self.addEventListener("fetch", function(event) {
 });
 
 function servePhoto(request) {
-  var storageUrl = request;
+  let storageUrl = request.url.replace(app_cache.config.imagesRegex, "");
 
   return caches.open(app_cache.config.contentImgsCache).then(function(cache) {
     return cache.match(storageUrl).then(function(response) {
@@ -128,7 +127,7 @@ function servePhoto(request) {
 self.addEventListener("message", function(event) {
   if (event.data.action === "skipWaiting") {
     /**
-     * Do not queu behind another service worker while it's waiting or installing.
+     * Do not queue behind another service worker while it's waiting or installing.
      * Take over straight away.
      * This should be called when the user hits a refresh button on our Toast with update notification.
      */

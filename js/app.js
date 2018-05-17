@@ -42,7 +42,8 @@ var app = (function() {
     styles: [
       "css/styles.css",
       "//necolas.github.io/normalize.css/latest/normalize.css"
-    ]
+    ],
+    images: ["/img/icon-no-image.png", "/img/icon.png"]
   };
 
   let controller = {
@@ -109,18 +110,45 @@ var app = (function() {
 
   let _cacheImages = function() {
     console.groupCollapsed("Getting loaded images upon sw register!");
-    const allImageElements = document.getElementsByClassName("restaurant-img");
+
+    const allImageElements = document.querySelectorAll(".restaurant-img");
+
     if (allImageElements.length > 0) {
       let allImages = [];
+
+      /** Add all images needed by default needed for proper functioning. */
+      resources.images.forEach(function(image) {
+        allImages.push({ imageRequest: image, imageResponse: image });
+      });
+
       for (const item of allImageElements) {
         let individual = new URL(item.currentSrc);
         console.log(["Image pathname: ", individual.pathname]);
-        allImages.push(individual.pathname);
+        /**
+         * Cache images without the size and dpi suffix so we serve it again if offline.
+         * Same as the controller service-worker.js method servePhoto.
+         */
+        let storageUrl = individual.pathname.replace(
+          app_cache.config.imagesRegex,
+          ""
+        );
+        allImages.push({
+          imageRequest: storageUrl,
+          imageResponse: individual.pathname
+        });
       }
       console.groupEnd();
       caches.open(app_cache.config.contentImgsCache).then(function(cache) {
         console.log(["Caching loaded images: ", allImages]);
-        return cache.addAll(allImages);
+        allImages.forEach(function(imageUrlsPair) {
+          /** Destructure request / response pair */
+          let { imageRequest, imageResponse } = imageUrlsPair;
+          imageResponse = fetch(imageResponse);
+          imageResponse.then(function(imageNetworkResponse) {
+            cache.put(imageRequest, imageNetworkResponse);
+          });
+        });
+        return;
       });
     }
   };

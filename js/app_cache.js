@@ -7,7 +7,8 @@
 var cache = (function() {
   let config = {
     staticCacheName: "gezelligheid-static-v1",
-    contentImgsCache: "gezelligheid-content-imgs-v1"
+    contentImgsCache: "gezelligheid-content-imgs-v1",
+    imagesRegex: /-\d*_\w*_\d+x\.jpg$/
   };
 
   config.allCaches = [config.staticCacheName, config.contentImgsCache];
