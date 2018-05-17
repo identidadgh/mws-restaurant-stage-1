@@ -41,7 +41,7 @@ var app = (function() {
   let resources = {
     styles: [
       "css/styles.css",
-      "//necolas.github.io/normalize.css/latest/normalize.css"
+      "https://necolas.github.io/normalize.css/latest/normalize.css"
     ],
     images: ["/img/icon-no-image.png", "/img/icon.png"]
   };
