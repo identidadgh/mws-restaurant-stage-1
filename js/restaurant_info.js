@@ -63,6 +63,15 @@ import DBHelper from "./dbhelper.js";
           console.error(error);
           return;
         }
+        // @todo should only proceed with fetching the reviews if restaurant exists
+        DBHelper.fetchReviewsByRestaurantId(id, (error, reviews) => {
+          self.restaurant.reviews = reviews;
+          if (!restaurant) {
+            console.error(error);
+            return;
+          }
+          fillReviewsHTML();
+        });
         fillRestaurantHTML();
         callback(null, restaurant);
       });
@@ -138,7 +147,7 @@ import DBHelper from "./dbhelper.js";
       fillRestaurantHoursHTML();
     }
     // fill reviews
-    fillReviewsHTML();
+    // fillReviewsHTML();
   };
 
   /**

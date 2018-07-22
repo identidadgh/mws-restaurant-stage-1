@@ -13,12 +13,16 @@ var app = (function() {
     isDevelopmentEnvironment: "",
     apiPhotographFormat: "",
     databaseUrl: "data/restaurants.json",
+    databaseUrlReviews: "data/reviews.json",
     dataFormat: "restaurants",
+    dataFormatReviews: "reviews",
     clientDatabase: {
       name: "gezelligheid",
       objectStoreName: "restaurants",
+      objectStoreNameReviews: "reviews",
       version: 2,
-      filters: ["neighborhood", "cuisine_type"]
+      filters: ["neighborhood", "cuisine_type"],
+      filtersReviews: ["restaurant_id"]
     }
   };
 
@@ -33,7 +37,9 @@ var app = (function() {
         config["envName"] = "Development";
         config["apiPhotographFormat"] = ".jpg";
         config["databaseUrl"] = "http://localhost:1337/restaurants";
+        config["databaseUrlReviews"] = "http://localhost:1337/reviews";
         config["dataFormat"] = "";
+        config["dataFormatReviews"] = "";
       }
     }
   };
@@ -227,6 +233,14 @@ var app = (function() {
     return config.databaseUrl;
   }
 
+  /**
+   * Function getDatabaseUrlReviews(), like the rest, is hidden to outside
+   * and is called using the "return" located at the bottom.
+   */
+  function getDatabaseUrlReviews() {
+    return config.databaseUrlReviews;
+  }
+
   settings.init();
   console.log("Configuration: ", config);
 
@@ -235,6 +249,7 @@ var app = (function() {
     controller: controller,
     getClientDatabase: getClientDatabase,
     getDatabaseUrl: getDatabaseUrl,
+    getDatabaseUrlReviews: getDatabaseUrlReviews,
     getApiPhotographFormat: getApiPhotographFormat
   };
 })();
