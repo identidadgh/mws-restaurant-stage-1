@@ -37,7 +37,7 @@ var app = (function() {
         config["envName"] = "Development";
         config["apiPhotographFormat"] = ".jpg";
         config["databaseUrl"] = "http://localhost:1337/restaurants";
-        config["databaseUrlReviews"] = "http://localhost:1337/reviews";
+        config["databaseUrlReviews"] = "http://localhost:1337/reviews/";
         config["dataFormat"] = "";
         config["dataFormatReviews"] = "";
       }

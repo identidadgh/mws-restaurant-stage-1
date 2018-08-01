@@ -163,7 +163,7 @@ export default class DBHelper {
    * Get all restaurant reviews from indexedDB
    * @return Promise coming from DBHelper.openDatabase
    */
-  static fetchReviewsCached() {
+  static fetchReviewsCached(opt_id) {
     return DBHelper.openDatabase().then(db => {
       if (!db) return; //@todo or already showing restaurant reviews
 
@@ -171,8 +171,20 @@ export default class DBHelper {
       let tx = db.transaction(database.objectStoreNameReviews);
       let store = tx.objectStore(database.objectStoreNameReviews);
       // let store = tx.objectStore(database.objectStoreNameReviews).index("by-cuisine_type");
+      var myIndex = store.index("by-restaurant_id");
+      // var getRequest = myIndex.get(opt_id);
 
-      return store.getAll();
+      let keyRangeValue = IDBKeyRange.only(opt_id);
+      console.log("keyRangeValue: ", keyRangeValue);
+      var getRequest = myIndex.getAll(keyRangeValue);
+      console.log("+++++++++++++++++++getRequest: ", getRequest);
+
+      // The following does not work.
+      // var getRequest = myIndex.getAll(opt_id);
+      console.log("-----------reviews from the db: ", getRequest);
+
+      return getRequest;
+      // return store.getAll();
     });
   }
 
@@ -180,8 +192,14 @@ export default class DBHelper {
    * Fetch all restaurant reviews from the API server
    * @return Promise
    */
-  static fetchReviewsOnline() {
-    return fetch(DBHelper.DATABASE_URL_REVIEWS)
+  static fetchReviewsOnline(opt_id) {
+    // https://fetch.spec.whatwg.org/#fetch-api
+    let url = new URL(DBHelper.DATABASE_URL_REVIEWS);
+    let params = { restaurant_id: opt_id };
+    Object.keys(params).forEach(key =>
+      url.searchParams.append(key, params[key])
+    );
+    return fetch(url)
       .then(response => response.json())
       .then(function(data) {
         let _dbPromise = DBHelper.openDatabase();
@@ -207,16 +225,28 @@ export default class DBHelper {
    * Fetch all restaurant reviews.
    */
   static fetchReviews(callback) {
-    DBHelper.fetchReviewsCached()
+    const id = parseInt(getParameterByName("id"));
+
+    DBHelper.fetchReviewsCached(id)
       .then(dataCached => {
         // dataCached can either be "undefined" when there is no db
         // OR it can be a Promise coming from DBHelper.openDatabase
         // Therefore we return a Promise.resolve() which is suitable for
         // a returned value or returned Promise. Either case we return a Promise.
-        if (dataCached.length > 0) return Promise.resolve(dataCached);
+        console.log(
+          "EXPECTED - typeof dataCached !== undefined : ",
+          typeof dataCached
+        );
+        console.log("EXPECTED - dataCached.length > 0 : ", dataCached.length);
+
+        // if (typeof dataCached !== "undefined") {
+        if (dataCached > 0) {
+          console.log("-----------undefined: ", getRequest);
+          return Promise.resolve(dataCached);
+        }
 
         // Then we proceed to return a Promise coming from the Fetch API.
-        return DBHelper.fetchReviewsOnline();
+        return DBHelper.fetchReviewsOnline(id);
       })
       .then(data => {
         return callback(null, data);
@@ -379,3 +409,16 @@ export default class DBHelper {
     return marker;
   }
 }
+
+/**
+ * Get a parameter by name from page URL.
+ */
+const getParameterByName = (name, url) => {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return "";
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+};
