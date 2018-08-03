@@ -58,7 +58,7 @@ import DBHelper from "./dbhelper.js";
 
     const id = parseInt(getParameterByName("id"));
 
-    _postData(`http://localhost:1337/reviews/`, {
+    _postData(DBHelper.DATABASE_URL_REVIEWS, {
       restaurant_id: id,
       name: reviewer_name,
       rating: reviewer_rating,
