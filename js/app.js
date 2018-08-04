@@ -1,5 +1,6 @@
 import { cache as app_cache } from "./app_cache.js";
 import ToastsView from "./views/Toasts.js";
+import DBHelper from "./dbhelper.js";
 
 var app = (function() {
   const flags = {
@@ -20,6 +21,7 @@ var app = (function() {
       name: "gezelligheid",
       objectStoreName: "restaurants",
       objectStoreNameReviews: "reviews",
+      objectStoreNameOutbox: "outbox",
       version: 2,
       filters: ["neighborhood", "cuisine_type"],
       filtersReviews: ["restaurant_id"]
@@ -97,6 +99,97 @@ var app = (function() {
   document.addEventListener("DOMContentLoaded", event => {
     loadResources();
   });
+  window.addEventListener("online", () => {
+    _processOutbox();
+  });
+
+  let _processOutbox = () => {
+    alert("back online! process outbox");
+
+    let outboxEntries = DBHelper.outboxData();
+    // console.log(
+    //   "+++++++Esaki ta e promise di entries for di e outbox: ",
+    //   outboxEntries
+    // );
+    outboxEntries.then(entries => {
+      // console.log("+++++++Esaki ta tur entries for di e outbox: ", entries);
+      entries.forEach(entry => {
+        console.warn(
+          "+++++++Esaki ta entry.id:" +
+            entry.id +
+            " un di e entries for di e outbox: ",
+          entry
+        );
+
+        _postData(config.databaseUrlReviews, {
+          restaurant_id: entry.restaurant_id,
+          name: entry.name,
+          rating: entry.rating,
+          comments: entry.comments
+        })
+          .then(data => console.log(data)) // JSON from `response.json()` call
+          // .then(() => {
+          //   alert("Thank you for your post!");
+          //   // @TODO the newly added review needs to be fetched from the db and added to the list of reviews
+          //   // @TODO instead of an alert we could make a nice CSS animation for completion.
+          // }) // JSON from `response.json()` call
+          .then(() => {
+            console.warn("Remove the review entry from the outbox objectStore");
+            DBHelper.removeDataFromOutbox(entry.id);
+          })
+          .catch(error => console.error(error));
+      });
+    });
+    // outboxEntries.forEach(entry => {
+    //   console.warn("+++++++Esaki ta un entry for di e outbox: ", entry);
+    // });
+    return;
+
+    // Foreach entry in the local Cache objectStore called outbox,
+    // let outboxData = {
+    //   restaurant_id: 2,
+    //   name: "test name",
+    //   rating: 5,
+    //   comments: "test comments"
+    // };
+    //
+    // _postData(DBHelper.DATABASE_URL_REVIEWS, {
+    // _postData(config.databaseUrlReviews, {
+    //   restaurant_id: outboxData.restaurant_id,
+    //   name: outboxData.name,
+    //   rating: outboxData.rating,
+    //   comments: outboxData.comments
+    // })
+    //   .then(data => console.log(data)) // JSON from `response.json()` call
+    //   .then(() => {
+    //     alert("Thank you for your post!");
+    //     // @TODO the newly added review needs to be fetched from the db and added to the list of reviews
+    //     // @TODO instead of an alert we could make a nice CSS animation for completion.
+    //   }) // JSON from `response.json()` call
+    //   .then(() => {
+    //     console.warn("Remove the review entry from the outbox objectStore");
+    //   })
+    //   .catch(error => console.error(error));
+  };
+
+  const _postData = (url = ``, data = {}) => {
+    // Default options are marked with *
+    return fetch(url, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, cors, *same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, same-origin, *omit
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+        // "Content-Type": "application/x-www-form-urlencoded",
+      },
+      redirect: "follow", // manual, *follow, error
+      referrer: "no-referrer", // no-referrer, *client
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    })
+      .then(response => response.json()) // parses response to JSON
+      .catch(error => console.error(`Fetch Error =\n`, error));
+  };
 
   const loadResources = () => {
     return new Promise(function(resolve) {

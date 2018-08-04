@@ -18,29 +18,14 @@ import DBHelper from "./dbhelper.js";
     document.querySelector("body").insertAdjacentElement("beforeend", fileref);
   };
 
-  const _postData = (url = ``, data = {}) => {
-    // Default options are marked with *
-    return fetch(url, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      mode: "cors", // no-cors, cors, *same-origin
-      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: "same-origin", // include, same-origin, *omit
-      headers: {
-        "Content-Type": "application/json; charset=utf-8"
-        // "Content-Type": "application/x-www-form-urlencoded",
-      },
-      redirect: "follow", // manual, *follow, error
-      referrer: "no-referrer", // no-referrer, *client
-      body: JSON.stringify(data) // body data type must match "Content-Type" header
-    })
-      .then(response => response.json()) // parses response to JSON
-      .catch(error => console.error(`Fetch Error =\n`, error));
-  };
-
   document.addEventListener("DOMContentLoaded", function() {
     _loadMap();
   });
   document.querySelector("form button").addEventListener("click", function() {
+    _postReview();
+  });
+
+  let _postReview = () => {
     let reviewer_name = document.querySelector("input[name='reviewer_name']")
       .value;
     let reviewer_rating = document.querySelector("select[name='rating']").value;
@@ -58,20 +43,32 @@ import DBHelper from "./dbhelper.js";
 
     const id = parseInt(getParameterByName("id"));
 
-    _postData(DBHelper.DATABASE_URL_REVIEWS, {
+    let data = {
       restaurant_id: id,
       name: reviewer_name,
       rating: reviewer_rating,
       comments: reviewer_comments
-    })
-      .then(data => console.log(data)) // JSON from `response.json()` call
-      .then(() => {
-        alert("Thank you for your post!");
-        // @TODO the newly added review needs to be fetched from the db and added to the list of reviews
-        // @TODO instead of an alert we could make a nice CSS animation for completion.
-      }) // JSON from `response.json()` call
-      .catch(error => console.error(error));
-  });
+    };
+
+    DBHelper.postDataToOutbox(data);
+
+    // @TODO first, post to the offline cache.
+    // @TODO then, use the service worker and post to the online db.
+    // @TODO see the @TODOs below!
+    // _postData(DBHelper.DATABASE_URL_REVIEWS, {
+    //   restaurant_id: id,
+    //   name: reviewer_name,
+    //   rating: reviewer_rating,
+    //   comments: reviewer_comments
+    // })
+    //   .then(data => console.log(data)) // JSON from `response.json()` call
+    //   .then(() => {
+    //     alert("Thank you for your post!");
+    //     // @TODO the newly added review needs to be fetched from the db and added to the list of reviews
+    //     // @TODO instead of an alert we could make a nice CSS animation for completion.
+    //   }) // JSON from `response.json()` call
+    //   .catch(error => console.error(error));
+  };
 
   /**
    * Initialize Google map, called from HTML.

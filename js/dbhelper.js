@@ -50,6 +50,12 @@ export default class DBHelper {
         console.log(`idb create index ${name} for keypath: ${index}`);
         storeReviews.createIndex(name, keyPath);
       });
+
+      // Create the objectStore called outbox for user-posted reviews offline in the database called gezelligheid
+      upgradeDb.createObjectStore(database.objectStoreNameOutbox, {
+        keyPath: "id", // Just a simple id to keep reviews separated
+        autoIncrement: true
+      });
     });
   }
 
@@ -376,6 +382,60 @@ export default class DBHelper {
         );
         callback(null, uniqueCuisines);
       }
+    });
+  }
+
+  /**
+   * Get and return all entries in the Cache objectStore called outbox.
+   */
+  static outboxData() {
+    return DBHelper.openDatabase().then(db => {
+      if (!db) return; //@todo or already showing restaurant reviews
+
+      const database = myApp.getClientDatabase();
+      let tx = db.transaction(database.objectStoreNameOutbox);
+      let store = tx.objectStore(database.objectStoreNameOutbox);
+      return store.getAll();
+    });
+  }
+
+  /**
+   * Put data in the Cache objectStore called outbox for use while device is offline.
+   * @param object opt_data
+   */
+  static postDataToOutbox(opt_data) {
+    let _dbPromise = DBHelper.openDatabase();
+    let data = opt_data;
+
+    _dbPromise.then(db => {
+      if (!db) return;
+      const database = myApp.getClientDatabase();
+      let tx = db.transaction(database.objectStoreNameOutbox, "readwrite");
+      let store = tx.objectStore(database.objectStoreNameOutbox);
+      store.put(data);
+    });
+    console.log("Restaurant Reviews posted to objectStoreNameOutbox: ", data);
+    return data;
+  }
+
+  /**
+   * Put data in the Cache objectStore called outbox for use while device is offline.
+   * @param object opt_data
+   */
+  static removeDataFromOutbox(opt_entryId) {
+    let _dbPromise = DBHelper.openDatabase();
+    let entryId = opt_entryId;
+
+    _dbPromise.then(db => {
+      if (!db) return;
+      const database = myApp.getClientDatabase();
+      let tx = db.transaction(database.objectStoreNameOutbox, "readwrite");
+      let store = tx.objectStore(database.objectStoreNameOutbox);
+      let storeRequest = store.delete(entryId);
+      storeRequest.onsuccess = event => {
+        console.log("Just removed entry.id: " + entryId + " - ", event);
+      };
+      return storeRequest;
     });
   }
 
