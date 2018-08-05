@@ -114,10 +114,6 @@ import DBHelper from "./dbhelper.js";
         // @todo should only proceed with fetching the reviews if restaurant exists
         DBHelper.fetchReviewsByRestaurantId(id, (error, reviews) => {
           self.restaurant.reviews = reviews;
-          if (!restaurant) {
-            console.error(error);
-            return;
-          }
           requestAnimationFrame(function() {
             fillReviewsHTML();
           });
