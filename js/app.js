@@ -112,82 +112,38 @@ var app = (function() {
     alert("process outbox!");
 
     let outboxEntries = DBHelper.outboxData();
-    // console.log(
-    //   "+++++++Esaki ta e promise di entries for di e outbox: ",
-    //   outboxEntries
-    // );
-    outboxEntries.then(entries => {
-      // console.log("+++++++Esaki ta tur entries for di e outbox: ", entries);
-      entries.forEach(entry => {
-        console.warn(
-          "+++++++Esaki ta entry.id:" +
-            entry.id +
-            " un di e entries for di e outbox: ",
-          entry
-        );
 
+    outboxEntries.then(entries => {
+      entries.forEach(entry => {
         _postData(config.databaseUrlReviews, {
           restaurant_id: entry.restaurant_id,
           name: entry.name,
           rating: entry.rating,
           comments: entry.comments
         })
-          // .then(data => console.log(data)) // JSON from `response.json()` call
-          // .then(() => {
-          //   alert("Thank you for your post!");
-          //   // @TODO the newly added review needs to be fetched from the db and added to the list of reviews
-          //   // @TODO instead of an alert we could make a nice CSS animation for completion.
-          // }) // JSON from `response.json()` call
-
           .then(
             response => {
-              console.log("####### RESPONSE #######: ", response);
-              console.warn(
-                "Remove the review entry from the outbox objectStore"
+              console.log(
+                "Remove the review entry from the outbox objectStore",
+                response
               );
-              // return;
-              // @TODO Only remove data from outbox if posting it to the online db was succesful.
+
+              // Only remove data from outbox if posting it to the online db was succesful.
               DBHelper.removeDataFromOutbox(entry.id);
             },
             error => {
-              console.error("####### ERROR #######: ", error);
-              console.warn("So we do NOT removeDataFromOutbox");
+              console.warn(
+                "_postData to online db failed, do NOT removeDataFromOutbox",
+                error
+              );
             }
           )
 
           .catch(error => console.error(error));
       });
     });
-    // outboxEntries.forEach(entry => {
-    //   console.warn("+++++++Esaki ta un entry for di e outbox: ", entry);
-    // });
-    return;
 
-    // Foreach entry in the local Cache objectStore called outbox,
-    // let outboxData = {
-    //   restaurant_id: 2,
-    //   name: "test name",
-    //   rating: 5,
-    //   comments: "test comments"
-    // };
-    //
-    // _postData(DBHelper.DATABASE_URL_REVIEWS, {
-    // _postData(config.databaseUrlReviews, {
-    //   restaurant_id: outboxData.restaurant_id,
-    //   name: outboxData.name,
-    //   rating: outboxData.rating,
-    //   comments: outboxData.comments
-    // })
-    //   .then(data => console.log(data)) // JSON from `response.json()` call
-    //   .then(() => {
-    //     alert("Thank you for your post!");
-    //     // @TODO the newly added review needs to be fetched from the db and added to the list of reviews
-    //     // @TODO instead of an alert we could make a nice CSS animation for completion.
-    //   }) // JSON from `response.json()` call
-    //   .then(() => {
-    //     console.warn("Remove the review entry from the outbox objectStore");
-    //   })
-    //   .catch(error => console.error(error));
+    return;
   };
 
   /**
@@ -210,8 +166,6 @@ var app = (function() {
       referrer: "no-referrer", // no-referrer, *client
       body: JSON.stringify(data) // body data type must match "Content-Type" header
     }).then(response => response.json());
-    // .then(response => response.json()) // parses response to JSON
-    // .catch(error => console.error(`Fetch Error =\n`, error));
   };
 
   const loadResources = () => {

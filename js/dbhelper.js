@@ -176,21 +176,12 @@ export default class DBHelper {
       const database = myApp.getClientDatabase();
       let tx = db.transaction(database.objectStoreNameReviews);
       let store = tx.objectStore(database.objectStoreNameReviews);
-      // let store = tx.objectStore(database.objectStoreNameReviews).index("by-cuisine_type");
       var myIndex = store.index("by-restaurant_id");
-      // var getRequest = myIndex.get(opt_id);
 
       let keyRangeValue = IDBKeyRange.only(opt_id);
-      console.log("keyRangeValue: ", keyRangeValue);
       var getRequest = myIndex.getAll(keyRangeValue);
-      console.log("+++++++++++++++++++getRequest: ", getRequest);
-
-      // The following does not work.
-      // var getRequest = myIndex.getAll(opt_id);
-      console.log("-----------reviews from the db: ", getRequest);
 
       return getRequest;
-      // return store.getAll();
     });
   }
 
@@ -229,6 +220,11 @@ export default class DBHelper {
 
   /**
    * Fetch all restaurant reviews.
+   *
+   * @TODO fix @BUG where if we are online and visit restaurant.html?id=8
+   * while online, loads reviews (and caches then in indexedDB), then go offline
+   * and refresh the page it shows no reviews. The HTML is missing while the idb
+   * has all the reviews already.
    */
   static fetchReviews(callback) {
     const id = parseInt(getParameterByName("id"));
@@ -239,15 +235,7 @@ export default class DBHelper {
         // OR it can be a Promise coming from DBHelper.openDatabase
         // Therefore we return a Promise.resolve() which is suitable for
         // a returned value or returned Promise. Either case we return a Promise.
-        console.log(
-          "EXPECTED - typeof dataCached !== undefined : ",
-          typeof dataCached
-        );
-        console.log("EXPECTED - dataCached.length > 0 : ", dataCached.length);
-
-        // if (typeof dataCached !== "undefined") {
         if (dataCached > 0) {
-          console.log("-----------undefined: ", getRequest);
           return Promise.resolve(dataCached);
         }
 
@@ -408,7 +396,6 @@ export default class DBHelper {
   static postDataToOutbox(opt_data) {
     let _dbPromise = DBHelper.openDatabase();
     let data = opt_data;
-    console.log("Restaurant Reviews posted to objectStoreNameOutbox: ", data);
 
     return _dbPromise.then(db => {
       if (!db) return;
@@ -434,7 +421,7 @@ export default class DBHelper {
       let store = tx.objectStore(database.objectStoreNameOutbox);
       let storeRequest = store.delete(entryId);
       storeRequest.onsuccess = event => {
-        console.log("Just removed entry.id: " + entryId + " - ", event);
+        console.log("Remove entry.id: " + entryId + " - ", event);
       };
       return storeRequest;
     });

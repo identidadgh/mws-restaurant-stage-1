@@ -36,15 +36,6 @@ import DBHelper from "./dbhelper.js";
     let reviewer_comments = document.querySelector("textarea[name='comments']")
       .value;
 
-    console.log(
-      "Name: " +
-        reviewer_name +
-        " Rating: " +
-        reviewer_rating +
-        " Comments: " +
-        reviewer_comments
-    );
-
     const id = parseInt(getParameterByName("id"));
 
     let data = {
@@ -64,18 +55,12 @@ import DBHelper from "./dbhelper.js";
          * Update reviews html with data in the outbox.
          * @TODO Add review to the top spot instead of last.
          */
-        // console.log("self.restaurant.reviews: ", self.restaurant.reviews);
-        // self.restaurant.reviews.push(data);
         self.restaurant.reviews = [data];
-        // console.log("self.restaurant.reviews AFTER: ", self.restaurant.reviews);
-
         requestAnimationFrame(function() {
-          console.log("Update html with data in the outbox");
           fillReviewsHTML();
         });
 
         // Clear form
-        console.log("Clear form.");
         document.querySelector("form").reset();
       })
       .then(() => {
@@ -83,22 +68,6 @@ import DBHelper from "./dbhelper.js";
         myApp.processOutbox();
       })
       .catch(error => console.error(error));
-
-    // @TODO then, use the service worker and post to the online db.
-    // @TODO see the @TODOs below!
-    // _postData(DBHelper.DATABASE_URL_REVIEWS, {
-    //   restaurant_id: id,
-    //   name: reviewer_name,
-    //   rating: reviewer_rating,
-    //   comments: reviewer_comments
-    // })
-    //   .then(data => console.log(data)) // JSON from `response.json()` call
-    //   .then(() => {
-    //     alert("Thank you for your post!");
-    //     // @TODO the newly added review needs to be fetched from the db and added to the list of reviews
-    //     // @TODO instead of an alert we could make a nice CSS animation for completion.
-    //   }) // JSON from `response.json()` call
-    //   .catch(error => console.error(error));
   };
 
   /**
@@ -144,7 +113,7 @@ import DBHelper from "./dbhelper.js";
         }
         // @todo should only proceed with fetching the reviews if restaurant exists
         DBHelper.fetchReviewsByRestaurantId(id, (error, reviews) => {
-          self.restaurant.reviews = reviews;
+          self.restaurant["reviews"] = reviews;
           requestAnimationFrame(function() {
             fillReviewsHTML();
           });
@@ -225,8 +194,6 @@ import DBHelper from "./dbhelper.js";
     if (restaurant.operating_hours) {
       fillRestaurantHoursHTML();
     }
-    // fill reviews
-    // fillReviewsHTML();
   };
 
   /**
