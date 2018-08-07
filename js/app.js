@@ -208,11 +208,10 @@ var app = (function() {
   };
 
   let _cacheImages = function() {
-    console.groupCollapsed("Getting loaded images upon sw register!");
-
     const allImageElements = document.querySelectorAll(".restaurant-img");
 
     if (allImageElements.length > 0) {
+      console.groupCollapsed("Getting loaded images upon sw register!");
       let allImages = [];
 
       /** Add all images needed by default needed for proper functioning. */
