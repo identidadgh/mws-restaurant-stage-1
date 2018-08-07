@@ -228,6 +228,8 @@ import DBHelper from "./dbhelper.js";
     const title = document.createElement("h3");
     title.id = "reviews-name";
     title.innerHTML = "Reviews";
+    // When posting a new review, only add review-section title if it does not exist.
+    if (document.querySelector("#reviews-name") === null)
     container.appendChild(title);
 
     if (!reviews) {
