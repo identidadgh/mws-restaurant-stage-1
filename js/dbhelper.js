@@ -408,16 +408,15 @@ export default class DBHelper {
   static postDataToOutbox(opt_data) {
     let _dbPromise = DBHelper.openDatabase();
     let data = opt_data;
+    console.log("Restaurant Reviews posted to objectStoreNameOutbox: ", data);
 
-    _dbPromise.then(db => {
+    return _dbPromise.then(db => {
       if (!db) return;
       const database = myApp.getClientDatabase();
       let tx = db.transaction(database.objectStoreNameOutbox, "readwrite");
       let store = tx.objectStore(database.objectStoreNameOutbox);
       store.put(data);
     });
-    console.log("Restaurant Reviews posted to objectStoreNameOutbox: ", data);
-    return data;
   }
 
   /**

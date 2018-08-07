@@ -132,16 +132,29 @@ var app = (function() {
           rating: entry.rating,
           comments: entry.comments
         })
-          .then(data => console.log(data)) // JSON from `response.json()` call
+          // .then(data => console.log(data)) // JSON from `response.json()` call
           // .then(() => {
           //   alert("Thank you for your post!");
           //   // @TODO the newly added review needs to be fetched from the db and added to the list of reviews
           //   // @TODO instead of an alert we could make a nice CSS animation for completion.
           // }) // JSON from `response.json()` call
-          .then(() => {
-            console.warn("Remove the review entry from the outbox objectStore");
-            DBHelper.removeDataFromOutbox(entry.id);
-          })
+
+          .then(
+            response => {
+              console.log("####### RESPONSE #######: ", response);
+              console.warn(
+                "Remove the review entry from the outbox objectStore"
+              );
+              // return;
+              // @TODO Only remove data from outbox if posting it to the online db was succesful.
+              DBHelper.removeDataFromOutbox(entry.id);
+            },
+            error => {
+              console.error("####### ERROR #######: ", error);
+              console.warn("So we do NOT removeDataFromOutbox");
+            }
+          )
+
           .catch(error => console.error(error));
       });
     });
@@ -196,9 +209,9 @@ var app = (function() {
       redirect: "follow", // manual, *follow, error
       referrer: "no-referrer", // no-referrer, *client
       body: JSON.stringify(data) // body data type must match "Content-Type" header
-    })
-      .then(response => response.json()) // parses response to JSON
-      .catch(error => console.error(`Fetch Error =\n`, error));
+    }).then(response => response.json());
+    // .then(response => response.json()) // parses response to JSON
+    // .catch(error => console.error(`Fetch Error =\n`, error));
   };
 
   const loadResources = () => {
@@ -352,7 +365,8 @@ var app = (function() {
     getClientDatabase: getClientDatabase,
     getDatabaseUrl: getDatabaseUrl,
     getDatabaseUrlReviews: getDatabaseUrlReviews,
-    getApiPhotographFormat: getApiPhotographFormat
+    getApiPhotographFormat: getApiPhotographFormat,
+    processOutbox: _processOutbox
   };
 })();
 

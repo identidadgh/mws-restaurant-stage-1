@@ -54,9 +54,36 @@ import DBHelper from "./dbhelper.js";
       comments: reviewer_comments
     };
 
-    DBHelper.postDataToOutbox(data);
+    // Post offline to the indexedDB objectStore called outbox.
+    DBHelper.postDataToOutbox(data)
+      .then(() => {
+        // Alert user that posted review was successful.
+        alert("Thank you for your post!");
 
-    // @TODO first, post to the offline cache.
+        /**
+         * Update reviews html with data in the outbox.
+         * @TODO Add review to the top spot instead of last.
+         */
+        // console.log("self.restaurant.reviews: ", self.restaurant.reviews);
+        // self.restaurant.reviews.push(data);
+        self.restaurant.reviews = [data];
+        // console.log("self.restaurant.reviews AFTER: ", self.restaurant.reviews);
+
+        requestAnimationFrame(function() {
+          console.log("Update html with data in the outbox");
+          fillReviewsHTML();
+        });
+
+        // Clear form
+        console.log("Clear form.");
+        document.querySelector("form").reset();
+      })
+      .then(() => {
+        // Post previously added review in outbox to online db.
+        myApp.processOutbox();
+      })
+      .catch(error => console.error(error));
+
     // @TODO then, use the service worker and post to the online db.
     // @TODO see the @TODOs below!
     // _postData(DBHelper.DATABASE_URL_REVIEWS, {
@@ -234,7 +261,7 @@ import DBHelper from "./dbhelper.js";
     title.innerHTML = "Reviews";
     // When posting a new review, only add review-section title if it does not exist.
     if (document.querySelector("#reviews-name") === null)
-    container.appendChild(title);
+      container.appendChild(title);
 
     if (!reviews) {
       const noReviews = document.createElement("p");
