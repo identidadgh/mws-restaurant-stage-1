@@ -400,8 +400,10 @@ export default class DBHelper {
   }
 
   /**
-   * Put data in the Cache objectStore called outbox for use while device is offline.
+   * Put data in the IndexedDB objectStore called outbox.
+   * Whether device is online OR offline.
    * @param object opt_data
+   * @return Promise
    */
   static postDataToOutbox(opt_data) {
     let _dbPromise = DBHelper.openDatabase();

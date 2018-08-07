@@ -103,8 +103,13 @@ var app = (function() {
     _processOutbox();
   });
 
+  /**
+   * Iterate entries in IndexedDB objectStore called outbox and postData to online db.
+   *
+   * @return NOT promise, but could be.
+   */
   let _processOutbox = () => {
-    alert("back online! process outbox");
+    alert("process outbox!");
 
     let outboxEntries = DBHelper.outboxData();
     // console.log(
@@ -172,6 +177,11 @@ var app = (function() {
     //   .catch(error => console.error(error));
   };
 
+  /**
+   * Post data to the online db using Fetch API.
+   *
+   * @return Promise.
+   */
   const _postData = (url = ``, data = {}) => {
     // Default options are marked with *
     return fetch(url, {

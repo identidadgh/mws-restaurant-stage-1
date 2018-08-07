@@ -25,6 +25,10 @@ import DBHelper from "./dbhelper.js";
     _postReview();
   });
 
+  /**
+   * Post data entered in the review form to the IndexedDB objectStore called outbox,
+   * then process the outbox so it is posted to the online db.
+   */
   let _postReview = () => {
     let reviewer_name = document.querySelector("input[name='reviewer_name']")
       .value;
