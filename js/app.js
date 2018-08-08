@@ -109,8 +109,6 @@ var app = (function() {
    * @return NOT promise, but could be.
    */
   let _processOutbox = () => {
-    alert("process outbox!");
-
     let outboxEntries = DBHelper.outboxData();
 
     outboxEntries.then(entries => {
