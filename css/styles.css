@@ -86,8 +86,14 @@ section {
 figure {
   margin: 0;
 }
+button, input, select, textarea {
+  border-radius: 0.2em;
+}
 a:focus,
-select:focus {
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
   box-shadow: 0 0 1em 0.5em red;
   outline: 0;
 }
@@ -195,22 +201,26 @@ nav h1 a {
   align-items: center;
   padding: 1em;
 }
-.filter-options h2 {
+.filter-options h2, .review-compose h2 {
   color: #262831;
   font-size: 1.5rem;
   font-weight: normal;
   line-height: 1;
 }
-.filter-options select {
+.filter-options select, .review-compose button, .review-compose input, .review-compose select, .review-compose textarea {
   background-color: white;
-  border: 1px solid #fff;
+  border: 2px solid #fff;
   font-family: Arial, sans-serif;
-  font-size: 11pt;
+  font-size: 1em;
   height: 35px;
   letter-spacing: 0;
   margin: 10px 0px;
   padding: 0px 10px;
   width: 100%;
+}
+.review-compose textarea{
+  height: 9em;
+  padding: .5em;
 }
 
 /* ====================== Restaurant Listing ====================== */
@@ -339,6 +349,9 @@ nav h1 a {
 #restaurant-container {
   order: 0;
 }
+#reviews-compose-container{
+  order: 2
+}
 #reviews-container {
   order: 2;
 }
@@ -372,6 +385,29 @@ nav h1 a {
 }
 #restaurant-hours td {
   display: block;
+}
+
+/* ====================== Review Compose ====================== */
+.review-compose, .review-tips {
+  width: 100%;
+  height: auto;
+  background-color: #ffa503;
+  padding: 1em;
+  justify-content: flex-start;
+}
+.review-compose button {
+  background: #252831;
+  color: white;
+  margin: 1em 0 0;
+  height: 2em;
+}
+.review-compose button:hover,
+.review-compose button:focus {
+  background: white;
+  color: #252831;
+  text-decoration: underline;
+  border-bottom: 3px solid;
+  border-bottom-color: #252831;
 }
 
 /*** Error State Styling ***/
@@ -473,6 +509,9 @@ nav h1 a {
 }
 
 @media screen and (min-width: 1200px) {
+  .review-compose, .review-tips {
+    width: calc((100vw - 3em) / 2);
+  }
   #reviews-list li {
     width: 50%;
   }

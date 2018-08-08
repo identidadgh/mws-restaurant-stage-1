@@ -47,23 +47,46 @@
     </section>
     <!-- end restaurant -->
     <!-- Beginning reviews -->
+    <section class="boxes" role="menubar" id="reviews-compose-container">
+      <div class="box review-compose">
+        <h2>Write a Review</h2>
+        <form>
+          <input type="hidden" name="restaurant_id" value="id_of_restaurant" required>
+          <input type="text" class="" name="reviewer_name" placeholder="Full Name*" value="" undefined aria-label="Reviewer Name" aria-required="true" required>
+          <label for="rating-select" class="fieldKey">Rating:</label>
+          <select aria-label="Restaurant rating from 1 to 5" id="rating-select" class="undefined" name="rating" placeholder="Select Rating" aria-required="true" required>
+            <option value disabled selected>Select Rating</option>
+            <option role="option" aria-selected="false" value="1">1</option>
+            <option role="option" aria-selected="false" value="2">2</option>
+            <option role="option" aria-selected="false" value="3">3</option>
+            <option role="option" aria-selected="false" value="4">4</option>
+            <option role="option" aria-selected="false" value="5">5</option>
+          </select>
+          <textarea class="" name="comments" placeholder="Write your review*" aria-label="Your review comments" required></textarea>
+          <button type="button" aria-disabled="false">POST REVIEW</button>
+        </form>
+      </div>
+      <div class="box review-tips">
+        <h3>Tips for writing a good review</h3>
+        <p>
+          Before visiting restaurants, reading reviews online helps others make informed decisions about the place and discover interesting tips.
+        </p>
+        <p>
+          Regardless of the experience restaurant visitors had, reviews share useful insights and information about places. Here are some tips to write a great review:
+          <ul>
+            <li>To write a good review, describe what you experience.</li>
+            <li>Start with your arrival and end with your departure.</li>
+            <li>What do you see, what do you hear, what do you smell.</li>
+            <li>Keep your review relevant to the restaurant.</li>
+            <li>Don't get too personal.</li>
+            <li>Share a balanced perspective, positive and negative.</li>
+            <li>Your review should be credible and coherent.</li>
+            <li>Show courtesy and be respectful.</li>
+          </ul>
+        </p>
+      </div>
+    </section>
     <section id="reviews-container">
-      <div>Mark as Favourite</div>
-      <div>Write a Review</div>
-      <form>
-        <input type="hidden" name="restaurant_id" value="id_of_restaurant">
-        <input type="text" class="" name="reviewer_name" placeholder="Full Name*" value="" undefined aria-label="Reviewer Name">
-        <select class="undefined" name="rating" placeholder="Rating" aria-label="Rating">
-          <option value disabled selected>Rating</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
-        <textarea class="" name="comments" placeholder="Write your review*" aria-label="Your review comments"></textarea>
-        <button type="button" aria-disabled="false">POST</button>
-      </form>
       <ul class="boxes" id="reviews-list"></ul>
     </section>
     <!-- End reviews -->
