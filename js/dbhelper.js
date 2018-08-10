@@ -78,6 +78,15 @@ export default class DBHelper {
   }
 
   /**
+   * Database URL PUT is_favorite.
+   * Change this to reviews.json file location on your server.
+   */
+  static get DATABASE_URL_IS_FAVORITE() {
+    let database_url = myApp.getDatabaseUrlIsFavorite();
+    return database_url;
+  }
+
+  /**
    * Get all restaurants from indexedDB
    * @return Promise coming from DBHelper.openDatabase
    */
@@ -92,6 +101,74 @@ export default class DBHelper {
 
       return store.getAll();
     });
+  }
+
+  static getRestaurantsCachedById(opt_restaurant_id) {
+    return DBHelper.openDatabase().then(db => {
+      if (!db) return; //@todo or already showing restaurants
+      const database = myApp.getClientDatabase();
+      let tx = db.transaction(database.objectStoreName);
+      let store = tx.objectStore(database.objectStoreName);
+
+      let keyRangeValue = IDBKeyRange.only(opt_restaurant_id);
+      // var getRequest = myIndex.getAll(keyRangeValue);
+      //  Grab the restaurant by id in the objectStore.
+      var objectStoreIdRequest = store.get(keyRangeValue);
+      console.warn("objectStoreIdRequest: ", objectStoreIdRequest);
+      return objectStoreIdRequest;
+    });
+  }
+  /**
+   * Get all restaurants from indexedDB
+   * @return Promise coming from DBHelper.openDatabase
+   */
+  static updateRestaurantsCached(opt_restaurant_id, opt_data) {
+    return DBHelper.openDatabase()
+      .then(db => {
+        if (!db) return; //@todo or already showing restaurants
+
+        DBHelper.getRestaurantsCachedById(opt_restaurant_id)
+          .then(data => {
+            console.warn("data: ", data);
+            return data;
+          })
+          .then(ybsData => {
+            // const database = myApp.getClientDatabase();
+            // let tx = db.transaction(database.objectStoreName, "readwrite");
+            // let store = tx.objectStore(database.objectStoreName);
+
+            // let keyRangeValue = IDBKeyRange.only(opt_restaurant_id);
+            // // var getRequest = myIndex.getAll(keyRangeValue);
+            // //  Grab the restaurant by id in the objectStore.
+            // var objectStoreIdRequest = store.get(keyRangeValue);
+            // console.warn("objectStoreIdRequest: ", objectStoreIdRequest);
+            // return objectStoreIdRequest;
+
+            // objectStoreIdRequest.is_favorite = opt_data.is_favorite;
+            // })
+            // .then(data => {
+            //   // objectStoreIdRequest.onsuccess = function(ybs) {
+            //   console.warn("ybsData: ", data);
+
+            const database = myApp.getClientDatabase();
+            let tx = db.transaction(database.objectStoreName, "readwrite");
+            let store = tx.objectStore(database.objectStoreName);
+
+            ybsData.is_favorite = opt_data.is_favorite;
+            return store.put(ybsData);
+          });
+      })
+      .then(result => {
+        console.log("ybsResult: ", result);
+        // };
+        // var myIndex = store.index("by-restaurant_id");
+
+        // let keyRangeValue = IDBKeyRange.only(opt_id);
+        // var getRequest = myIndex.getAll(keyRangeValue);
+
+        // return store.getAll();
+        return;
+      });
   }
 
   /**

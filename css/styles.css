@@ -193,6 +193,31 @@ nav h1 a {
   width: 100%;
   background-color: #ccc;
 }
+/* ====================== Restaurant Favorite ====================== */
+.favorite, .favorite-toggle {
+  font-size: 1.5em;
+  display: block;
+  z-index: 0;
+  position: absolute;
+  margin: -0.5em -0.5em;
+  line-height:  1em;
+  padding: 0.1em;
+  box-shadow: 0.1em 0.1em 0.25em 0px #262831;
+}
+.favorite-toggle {
+  background: white;
+  color: #252831;
+}
+.favorite {
+  color:orange;
+  border: .1em solid orange;
+  background: black;
+}
+.favorite:hover, .favorite-toggle:hover {
+  color:orange;
+  border: .1em solid black;
+  background: black;
+}
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
   width: 100%;

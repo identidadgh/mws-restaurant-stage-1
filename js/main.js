@@ -120,6 +120,7 @@ import DBHelper from "./dbhelper.js";
         } else {
           resetRestaurants(restaurants);
           fillRestaurantsHTML();
+          fillFavoritesHTML();
         }
       }
     );
@@ -140,6 +141,53 @@ import DBHelper from "./dbhelper.js";
     }
     self.markers = [];
     self.restaurants = restaurants;
+  };
+
+  /**
+   * Create all restaurants HTML and add them to the webpage.
+   */
+  const fillFavoritesHTML = () => {
+    // setup toggles for marking favorite restaurants
+    let elementFavoriteToggle = document.querySelectorAll(".favorite-toggle");
+    let elementFavorite = document.querySelectorAll(".favorite");
+    // let favoriteToggle = document.getElementsByClassName(
+    //   "favorite-toggle"
+    // );
+
+    Array.from(elementFavoriteToggle).forEach(function(element) {
+      element.addEventListener("click", _postFavorite, false);
+    });
+    Array.from(elementFavorite).forEach(function(element) {
+      element.addEventListener("click", _postFavorite, false);
+    });
+
+    // function _postFavorite(event) {
+    //   // console.log(ele.target.value);
+    //   console.log(event);
+    //   console.log("this: ", this.getAttribute("id"));
+    //   this.classList.remove("favourite-toggle");
+    //   this.className = "favorite";
+    // }
+  };
+
+  const modifyFavoritesHTML = element => {
+    let classFavoriteCurrent = element.getAttribute("class");
+    console.log("ybsClassCurrent: ", classFavoriteCurrent);
+
+    let classFavoriteChange =
+      classFavoriteCurrent.indexOf("favorite-toggle") >= 0
+        ? "favorite"
+        : "favorite-toggle";
+    console.log("ybsClassChange: ", classFavoriteChange);
+
+    // Modify the toggled icon, remove current and add the changed class.
+    element.classList.remove(classFavoriteCurrent);
+    element.classList.add(classFavoriteChange);
+
+    let classFavoriteNew = element.getAttribute("class");
+    console.log("ybsClassNew: ", classFavoriteNew);
+
+    return;
   };
 
   /**
@@ -247,6 +295,19 @@ import DBHelper from "./dbhelper.js";
       li.append(div);
     }
 
+    console.log("restaurant.is_favorite: ", restaurant.is_favorite);
+    let divFavorite = document.createElement("div");
+    divFavorite.className = "favorite-toggle";
+    if (typeof restaurant.is_favorite != "undefined") {
+      if (restaurant.is_favorite == true || restaurant.is_favorite == "true") {
+        divFavorite.className = "favorite";
+      }
+    }
+    divFavorite.innerText = "★";
+    divFavorite.setAttribute("id", "rid_" + restaurant.id);
+
+    li.append(divFavorite);
+
     const name = document.createElement("h3");
     name.innerHTML = restaurant.name;
     li.append(name);
@@ -267,6 +328,69 @@ import DBHelper from "./dbhelper.js";
 
     return li;
   };
+
+  function _postFavorite(event) {
+    // alert("Marked as Favorite!");
+    // function _postFavorite(event) {
+    // console.log(ele.target.value);
+    let id = this.getAttribute("id");
+    console.log(event);
+    console.log("this: ", id);
+    let restaurant_id = parseInt(id.replace("rid_", ""));
+
+    let classFavoriteCurrent = this.getAttribute("class");
+    console.log("ybsClassCurrent: ", classFavoriteCurrent);
+    let is_favorite_value =
+      classFavoriteCurrent.indexOf("favorite-toggle") >= 0 ? false : true;
+    let is_favorite_value_new = is_favorite_value ? false : true;
+    // let is_favorite_value_new = false;
+
+    modifyFavoritesHTML(this);
+    // let classFavoriteCurrent = this.getAttribute("class");
+    // console.log("ybsClassCurrent: ", classFavoriteCurrent);
+
+    // let classFavoriteChange =
+    //   classFavoriteCurrent.indexOf("favorite-toggle") >= 0
+    //     ? "favorite"
+    //     : "favorite-toggle";
+    // console.log("ybsClassChange: ", classFavoriteChange);
+
+    // // Modify the toggled icon, remove current and add the changed class.
+    // this.classList.remove(classFavoriteCurrent);
+    // this.classList.add(classFavoriteChange);
+
+    // let classFavoriteNew = this.getAttribute("class");
+    // console.log("ybsClassNew: ", classFavoriteNew);
+
+    let data = {
+      id: restaurant_id,
+      is_favorite: is_favorite_value_new
+    };
+
+    let url_query_string = `/${data.id}/?is_favorite=${is_favorite_value_new}`;
+
+    // data["url"] = DBHelper.DATABASE_URL_IS_FAVORITE.replace(
+    //   `<restaurant_id>`,
+    //   data.id
+    // );
+
+    data["url"] = DBHelper.DATABASE_URL_IS_FAVORITE + url_query_string;
+
+    console.log("data: ", data);
+    console.log("DATABASE_URL_IS_FAVORITE: ", data.url);
+
+    // @TODO PUT data in offline outbox and process it when online
+
+    // @TODO Update the indexedDB objectStore called restaurants to refresh the
+    // cache value for "is_favorite" and reflect what the online db has.
+
+    // @TODO We could also just delete the entry in the indexedDB and it will refresh.
+
+    // POST to the URL
+    // return myApp.putData(data.url);
+    return DBHelper.updateRestaurantsCached(data.id, data);
+    // return;
+  }
 
   /**
    * Add markers for current restaurants to the map.

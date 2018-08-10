@@ -40,6 +40,7 @@ var app = (function() {
         config["apiPhotographFormat"] = ".jpg";
         config["databaseUrl"] = "http://localhost:1337/restaurants";
         config["databaseUrlReviews"] = "http://localhost:1337/reviews/";
+        config["databaseUrlIsFavorite"] = config["databaseUrl"];
         config["dataFormat"] = "";
         config["dataFormatReviews"] = "";
       }
@@ -149,10 +150,32 @@ var app = (function() {
    *
    * @return Promise.
    */
-  const _postData = (url = ``, data = {}) => {
+  const _postData = (url = ``) => {
     // Default options are marked with *
     return fetch(url, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, cors, *same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, same-origin, *omit
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+        // "Content-Type": "application/x-www-form-urlencoded",
+      },
+      redirect: "follow", // manual, *follow, error
+      referrer: "no-referrer" // no-referrer, *client
+      // body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then(response => response.json());
+  };
+
+  /**
+   * PUT data to the online db using Fetch API.
+   *
+   * @return Promise.
+   */
+  const _putData = (url = ``, data = {}) => {
+    // Default options are marked with *
+    return fetch(url, {
+      method: "PUT", // *GET, POST, PUT, DELETE, etc.
       mode: "cors", // no-cors, cors, *same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
       credentials: "same-origin", // include, same-origin, *omit
@@ -308,6 +331,14 @@ var app = (function() {
     return config.databaseUrlReviews;
   }
 
+  /**
+   * Function getDatabaseUrlIsFavorite(), like the rest, is hidden to outside
+   * and is called using the "return" located at the bottom.
+   */
+  function getDatabaseUrlIsFavorite() {
+    return config.databaseUrlIsFavorite;
+  }
+
   settings.init();
   console.log("Configuration: ", config);
 
@@ -317,8 +348,10 @@ var app = (function() {
     getClientDatabase: getClientDatabase,
     getDatabaseUrl: getDatabaseUrl,
     getDatabaseUrlReviews: getDatabaseUrlReviews,
+    getDatabaseUrlIsFavorite: getDatabaseUrlIsFavorite,
     getApiPhotographFormat: getApiPhotographFormat,
-    processOutbox: _processOutbox
+    processOutbox: _processOutbox,
+    putData: _putData
   };
 })();
 
