@@ -144,48 +144,36 @@ import DBHelper from "./dbhelper.js";
   };
 
   /**
-   * Create all restaurants HTML and add them to the webpage.
+   * Create all toggles for restaurant favorites HTML and add them to the webpage.
    */
   const fillFavoritesHTML = () => {
     // setup toggles for marking favorite restaurants
     let elementFavoriteToggle = document.querySelectorAll(".favorite-toggle");
-    let elementFavorite = document.querySelectorAll(".favorite");
-    // let favoriteToggle = document.getElementsByClassName(
-    //   "favorite-toggle"
-    // );
-
     Array.from(elementFavoriteToggle).forEach(function(element) {
       element.addEventListener("click", _postFavorite, false);
     });
+
+    // setup toggles for unmarking favorite restaurants
+    let elementFavorite = document.querySelectorAll(".favorite");
     Array.from(elementFavorite).forEach(function(element) {
       element.addEventListener("click", _postFavorite, false);
     });
-
-    // function _postFavorite(event) {
-    //   // console.log(ele.target.value);
-    //   console.log(event);
-    //   console.log("this: ", this.getAttribute("id"));
-    //   this.classList.remove("favourite-toggle");
-    //   this.className = "favorite";
-    // }
   };
 
+  /**
+   * Modify class of toggles for restaurant favorites HTML when clicked.
+   */
   const modifyFavoritesHTML = element => {
     let classFavoriteCurrent = element.getAttribute("class");
-    console.log("ybsClassCurrent: ", classFavoriteCurrent);
 
     let classFavoriteChange =
       classFavoriteCurrent.indexOf("favorite-toggle") >= 0
         ? "favorite"
         : "favorite-toggle";
-    console.log("ybsClassChange: ", classFavoriteChange);
 
     // Modify the toggled icon, remove current and add the changed class.
     element.classList.remove(classFavoriteCurrent);
     element.classList.add(classFavoriteChange);
-
-    let classFavoriteNew = element.getAttribute("class");
-    console.log("ybsClassNew: ", classFavoriteNew);
 
     return;
   };
@@ -295,7 +283,7 @@ import DBHelper from "./dbhelper.js";
       li.append(div);
     }
 
-    console.log("restaurant.is_favorite: ", restaurant.is_favorite);
+    // console.log("restaurant.is_favorite: ", restaurant.is_favorite);
     let divFavorite = document.createElement("div");
     divFavorite.className = "favorite-toggle";
     if (typeof restaurant.is_favorite != "undefined") {
@@ -329,38 +317,31 @@ import DBHelper from "./dbhelper.js";
     return li;
   };
 
+  /**
+   * Handle clicked toggle of a restaurant with value is_favorite true, then
+   * post to online db and indexedDB objectStore.
+   *
+   * @param {*} event
+   *
+   * @return Promise that restaurantsCached in indexedDB objectStore are updated
+   * with new value for is_favorite.
+   */
   function _postFavorite(event) {
-    // alert("Marked as Favorite!");
-    // function _postFavorite(event) {
-    // console.log(ele.target.value);
+    // Grab the id of the clicked element and extract the restaurant_id.
     let id = this.getAttribute("id");
-    console.log(event);
-    console.log("this: ", id);
+    // console.log(event);
+    // console.log("this: ", id);
     let restaurant_id = parseInt(id.replace("rid_", ""));
 
+    // Grab the class of the clicked element and set the new value for is_favorite.
     let classFavoriteCurrent = this.getAttribute("class");
-    console.log("ybsClassCurrent: ", classFavoriteCurrent);
+    // console.log("ybsClassCurrent: ", classFavoriteCurrent);
     let is_favorite_value =
       classFavoriteCurrent.indexOf("favorite-toggle") >= 0 ? false : true;
     let is_favorite_value_new = is_favorite_value ? false : true;
-    // let is_favorite_value_new = false;
 
+    // Modify the appearance of the favorite toggle.
     modifyFavoritesHTML(this);
-    // let classFavoriteCurrent = this.getAttribute("class");
-    // console.log("ybsClassCurrent: ", classFavoriteCurrent);
-
-    // let classFavoriteChange =
-    //   classFavoriteCurrent.indexOf("favorite-toggle") >= 0
-    //     ? "favorite"
-    //     : "favorite-toggle";
-    // console.log("ybsClassChange: ", classFavoriteChange);
-
-    // // Modify the toggled icon, remove current and add the changed class.
-    // this.classList.remove(classFavoriteCurrent);
-    // this.classList.add(classFavoriteChange);
-
-    // let classFavoriteNew = this.getAttribute("class");
-    // console.log("ybsClassNew: ", classFavoriteNew);
 
     let data = {
       id: restaurant_id,
@@ -369,27 +350,12 @@ import DBHelper from "./dbhelper.js";
 
     let url_query_string = `/${data.id}/?is_favorite=${is_favorite_value_new}`;
 
-    // data["url"] = DBHelper.DATABASE_URL_IS_FAVORITE.replace(
-    //   `<restaurant_id>`,
-    //   data.id
-    // );
-
     data["url"] = DBHelper.DATABASE_URL_IS_FAVORITE + url_query_string;
 
-    console.log("data: ", data);
-    console.log("DATABASE_URL_IS_FAVORITE: ", data.url);
+    // console.log("data: ", data);
+    // console.log("DATABASE_URL_IS_FAVORITE: ", data.url);
 
-    // @TODO PUT data in offline outbox and process it when online
-
-    // @TODO Update the indexedDB objectStore called restaurants to refresh the
-    // cache value for "is_favorite" and reflect what the online db has.
-
-    // @TODO We could also just delete the entry in the indexedDB and it will refresh.
-
-    // POST to the URL
-    // return myApp.putData(data.url);
     return DBHelper.updateRestaurantsCached(data.id, data);
-    // return;
   }
 
   /**

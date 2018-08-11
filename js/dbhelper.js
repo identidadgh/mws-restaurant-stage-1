@@ -28,8 +28,7 @@ export default class DBHelper {
       var store = upgradeDb.createObjectStore(database.objectStoreName, {
         keyPath: "id" // Treat the "id" property of restaurant objects in the store as primary key
       });
-      // store.put("world", "hello");
-      // store.createIndex("by-date", "time");
+
       database.filters.forEach(index => {
         let name = `by-${index}`;
         let keyPath = index;
@@ -97,7 +96,6 @@ export default class DBHelper {
       const database = myApp.getClientDatabase();
       let tx = db.transaction(database.objectStoreName);
       let store = tx.objectStore(database.objectStoreName);
-      // let store = tx.objectStore(database.objectStoreName).index("by-cuisine_type");
 
       return store.getAll();
     });
@@ -111,7 +109,6 @@ export default class DBHelper {
       let store = tx.objectStore(database.objectStoreName);
 
       let keyRangeValue = IDBKeyRange.only(opt_restaurant_id);
-      // var getRequest = myIndex.getAll(keyRangeValue);
       //  Grab the restaurant by id in the objectStore.
       var objectStoreIdRequest = store.get(keyRangeValue);
       console.warn("objectStoreIdRequest: ", objectStoreIdRequest);
@@ -120,6 +117,7 @@ export default class DBHelper {
   }
   /**
    * Get all restaurants from indexedDB
+   *
    * @return Promise coming from DBHelper.openDatabase
    */
   static updateRestaurantsCached(opt_restaurant_id, opt_data) {
@@ -127,46 +125,18 @@ export default class DBHelper {
       .then(db => {
         if (!db) return; //@todo or already showing restaurants
 
-        DBHelper.getRestaurantsCachedById(opt_restaurant_id)
-          .then(data => {
-            console.warn("data: ", data);
-            return data;
-          })
-          .then(ybsData => {
-            // const database = myApp.getClientDatabase();
-            // let tx = db.transaction(database.objectStoreName, "readwrite");
-            // let store = tx.objectStore(database.objectStoreName);
+        DBHelper.getRestaurantsCachedById(opt_restaurant_id).then(newData => {
+          console.log("newData: ", newData);
+          const database = myApp.getClientDatabase();
+          let tx = db.transaction(database.objectStoreName, "readwrite");
+          let store = tx.objectStore(database.objectStoreName);
 
-            // let keyRangeValue = IDBKeyRange.only(opt_restaurant_id);
-            // // var getRequest = myIndex.getAll(keyRangeValue);
-            // //  Grab the restaurant by id in the objectStore.
-            // var objectStoreIdRequest = store.get(keyRangeValue);
-            // console.warn("objectStoreIdRequest: ", objectStoreIdRequest);
-            // return objectStoreIdRequest;
-
-            // objectStoreIdRequest.is_favorite = opt_data.is_favorite;
-            // })
-            // .then(data => {
-            //   // objectStoreIdRequest.onsuccess = function(ybs) {
-            //   console.warn("ybsData: ", data);
-
-            const database = myApp.getClientDatabase();
-            let tx = db.transaction(database.objectStoreName, "readwrite");
-            let store = tx.objectStore(database.objectStoreName);
-
-            ybsData.is_favorite = opt_data.is_favorite;
-            return store.put(ybsData);
-          });
+          newData.is_favorite = opt_data.is_favorite;
+          return store.put(newData);
+        });
       })
       .then(result => {
-        console.log("ybsResult: ", result);
-        // };
-        // var myIndex = store.index("by-restaurant_id");
-
-        // let keyRangeValue = IDBKeyRange.only(opt_id);
-        // var getRequest = myIndex.getAll(keyRangeValue);
-
-        // return store.getAll();
+        console.log("result: ", result);
         return;
       });
   }
