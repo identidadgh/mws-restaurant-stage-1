@@ -150,7 +150,7 @@ var app = (function() {
    *
    * @return Promise.
    */
-  const _postData = (url = ``) => {
+  const _postData = (url = ``, data = {}) => {
     // Default options are marked with *
     return fetch(url, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -162,8 +162,8 @@ var app = (function() {
         // "Content-Type": "application/x-www-form-urlencoded",
       },
       redirect: "follow", // manual, *follow, error
-      referrer: "no-referrer" // no-referrer, *client
-      // body: JSON.stringify(data) // body data type must match "Content-Type" header
+      referrer: "no-referrer", // no-referrer, *client
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
     }).then(response => response.json());
   };
 
